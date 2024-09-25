@@ -10,12 +10,16 @@ import SwiftData
 
 @main
 struct NojochApp: App {
+    @ObservedObject var router = Router()
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Patrimonio.self,
+            Estado.self,
+            Comunidad.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+        
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {
@@ -25,8 +29,36 @@ struct NojochApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack(path: $router.navPath) {
+                ContentView()
+                    .navigationDestination(for: Router.Destination.self) { destination in
+                        switch destination {
+                        //On boarding Screens
+                        case .onboarding:
+                            onBoardingView()
+                            
+                        //Main screens
+                        case .contentView:
+                            ContentView()
+                        case .mainView:
+                            mainView()
+                        case .exploreView:
+                            exploreView()
+                        case .miHerenciaView:
+                            miHerenciaView()
+                            
+                        //Information Screens
+                        case .patrimonio(let patrimonio):
+                            patrimonioView(patrimonio: patrimonio)
+                        case .estadoView(let estado):
+                            estadoView(estado: estado)
+                        case .comunidadView(let comunidad):
+                            comunidadView(comunidad: comunidad)
+                        }
+                    }
+            }
         }
+        .environmentObject(router)
         .modelContainer(sharedModelContainer)
     }
 }
