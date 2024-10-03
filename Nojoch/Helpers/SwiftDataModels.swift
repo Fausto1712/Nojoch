@@ -24,9 +24,10 @@ final class Patrimonio : Identifiable {
     var idioma: String
     var favorited: Bool
     var visited: Bool
-    var esterellas: Int
+    var estrella: Int
+    var fecha: Date
     
-    init(id: Int, tags: [String], persona: String, personaFoto: String, estado: String, comunidad: String, titulo: String, descripcion: String, coordinates: [Double], ubicacion:String, fotos: [String], idioma: String, favorited: Bool, visited: Bool, esterellas: Int) {
+    init(id: Int, tags: [String], persona: String, personaFoto: String, estado: String, comunidad: String, titulo: String, descripcion: String, coordinates: [Double], ubicacion:String, fotos: [String], idioma: String, favorited: Bool, visited: Bool, estrella: Int) {
         self.id = id
         self.tags = tags
         self.persona = persona
@@ -41,7 +42,8 @@ final class Patrimonio : Identifiable {
         self.idioma = idioma
         self.favorited = favorited
         self.visited = visited
-        self.esterellas = esterellas
+        self.estrella = estrella
+        self.fecha = Date()
     }
 }
 
@@ -90,7 +92,7 @@ extension Patrimonio {
             idioma: "",
             favorited: false,
             visited: false,
-            esterellas: 0
+            estrella: 0
         )
     }
 }

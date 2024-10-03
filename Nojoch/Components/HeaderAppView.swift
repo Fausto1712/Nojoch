@@ -29,13 +29,29 @@ struct HeaderAppView: View {
             HStack{
                 Image("person1")
                     .resizable()
-                    .frame(width: 50, height: 50)
+                    .frame(width: 40, height: 40)
                     .clipShape(Circle())
                     .foregroundStyle(.gray.opacity(0.5))
                 Text(headerTitle)
-                    .font(.system(size: 25))
-                    .fontWeight(.semibold)
+                    .foregroundStyle(.rosaMex)
+                    .font(.system(size: 22))
+                    .fontWeight(.bold)
                 Spacer()
+                Image(systemName: "bookmark")
+                    .resizable()
+                    .scaledToFit()
+                    .padding(5)
+                    .frame(width: 36, height: 36)
+                    .background(.gray.opacity(0.2))
+                    .clipShape(Circle())
+                
+                Image(systemName: "plus")
+                    .resizable()
+                    .scaledToFit()
+                    .padding(5)
+                    .frame(width: 36, height: 36)
+                    .background(.gray.opacity(0.2))
+                    .clipShape(Circle())
             }
             Divider()
                 .background(Color.gray.opacity(0.5))
@@ -73,6 +89,6 @@ struct HeaderAppViewComponent: View {
 }
 
 #Preview {
-    //HeaderAppView(headerTitle: "Herencia Viva")
-    HeaderAppViewComponent()
+    HeaderAppView(headerTitle: "Herencia Viva")
+    //HeaderAppViewComponent()
 }

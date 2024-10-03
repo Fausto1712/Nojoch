@@ -16,17 +16,17 @@ struct ContentView: View {
             TabView {
                 mainView()
                     .tabItem {
-                        Label("Main", systemImage: "house.fill")
+                        Label("Inicio", systemImage: "house.fill")
                     }
                 
                 exploreView()
                     .tabItem {
-                        Label("Explora", systemImage: "field.of.view.ultrawide")
+                        Label("Explora", systemImage: "binoculars")
                     }
                 
                 miHerenciaView()
                     .tabItem {
-                        Label("Mi herencia", systemImage: "bubble")
+                        Label("Herencia", systemImage: "medal")
                     }
 
             }

@@ -20,8 +20,12 @@ struct mainView: View {
             
             ScrollView{
                 HStack{
-                    Text("Patrimonios de hoy")
-                        .font(.system(size: 20))
+                    Text("Patrimonios")
+                        .foregroundStyle(.rosaMex)
+                        .font(.system(size: 17))
+                        .fontWeight(.semibold) +
+                    Text(" de hoy")
+                        .font(.system(size: 17))
                     Spacer()
                 }
                 
@@ -37,6 +41,8 @@ struct mainView: View {
 
 struct patrimonioCard: View {
     var patrimonio: Patrimonio
+    var colors: [Color] = [.rosaMex, .turquoise, .mustard, .darkTeal, .deepBlue]
+    let tagColors: [String: Color] = ["Patrimonio": .rosaMex, "Pueblo Mágico": .rosaMex, "Rural": .green, "Descubre": .turquoise, "Naturaleza": .green ]
     var body: some View {
         VStack{
             HStack{
@@ -44,16 +50,27 @@ struct patrimonioCard: View {
                     .resizable()
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())
-                Text(patrimonio.persona)
-                    .font(.system(size: 15))
-                    .fontWeight(.semibold)
+                VStack(alignment: .leading){
+                    Text(patrimonio.persona)
+                        .font(.system(size: 15))
+                        .fontWeight(.semibold)
+                    
+                    HStack{
+                        Text("\(patrimonio.comunidad),")
+                            .font(.system(size: 12))
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.rosaMex)
+                        
+                        Text(patrimonio.estado)
+                            .font(.system(size: 12))
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.gray.opacity(0.8))
+                    }
+                }
                 Spacer()
-                Text("\(patrimonio.comunidad),")
-                    .font(.system(size: 12))
-                    .fontWeight(.semibold)
-                Text(patrimonio.estado)
-                    .font(.system(size: 12))
-                    .fontWeight(.semibold)
+                Image(systemName: "ellipsis")
+                    .foregroundStyle(.gray.opacity(0.8))
+                    .fontWeight(.bold)
             }
             .padding(.vertical, 10)
             
@@ -74,17 +91,28 @@ struct patrimonioCard: View {
             .frame(width: 350, height: 250)
             .tabViewStyle(PageTabViewStyle())
             
-            HStack(spacing: 25){
-                ForEach(patrimonio.tags, id: \.self) { tag in
-                    Text(tag)
-                        .frame(width: 100, height: 35)
-                        .overlay{
-                            RoundedRectangle(cornerRadius: 5)
-                                .fill(Color.gray.opacity(0.3))
+            ScrollView(.horizontal){
+                HStack{
+                    ForEach(patrimonio.tags, id: \.self) { tag in
+                        HStack(spacing: 10){
+                            Circle()
+                                .frame(width: 10, height: 10)
+                                .foregroundStyle(.white)
+                            Text(tag)
+                                .foregroundStyle(.white)
+                                .font(.system(size: 16))
                         }
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 15)
+                        .background(tagColors[tag] ?? colors.randomElement())
+                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                    }
                 }
             }
-            .frame(width: 300)
+            .padding(.top, 5)
+            Text(patrimonio.fecha.toSpanishFormattedString())
+                .font(.system(size: 12))
+                .foregroundStyle(.gray.opacity(0.8))
         }
     }
 }
