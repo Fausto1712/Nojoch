@@ -33,6 +33,7 @@ struct onBoardingView: View {
                 fourthOnboardingView(pageState: $pageState)
             }
         }
+        .navigationBarBackButtonHidden()
         .onChange(of: pageState){
             if pageState == 4 {
                 isOnboardingCompleted = true
@@ -41,21 +42,21 @@ struct onBoardingView: View {
                     modelContext.insert(Patrimonio(id: 0, tags: ["Rural", "Descubre", "Patrimonio", "Hike", "Aventura", "Agua"], persona: "La Cumbre Cotidiana", personaFoto: "person5", estado: "Nuevo León", comunidad: "Puerto Genovevo", titulo: "Cañon Matacanes", descripcion: "Embarcate en una aventura extrema en uno de los cañones mas famosos de Mexico, con saltos de mas 12 metros, toboganes de agua, espeologia y mucho mas", coordinates: [25.371573866134465, -100.15547982938328], ubicacion: "Cola de caballo", fotos: ["matacanes1", "matacanes2", "matacanes3"], idioma: "Náhuatl", favorited: false, visited: false, estrella: 5))
                     
                     modelContext.insert(Patrimonio(id: 1, tags: ["Patrimonio", "Descubre", "Hike", "Cultura", "Montaña"], persona: "Explorador de Raíces", personaFoto: "person2", estado: "Nuevo León", comunidad: "El Salto", titulo: "Cerro de la Silla", descripcion: "Sube al icónico cerro que vigila la ciudad de Monterrey y conecta con la historia y cultura local, mientras disfrutas de vistas impresionantes.", coordinates: [25.612250, -100.278030], ubicacion: "El Salto, Nuevo León", fotos: ["cerro1", "cerro2", "cerro3"], idioma: "Huasteco", favorited: false, visited: false, estrella: 4))
-
+                    
                     modelContext.insert(Patrimonio(id: 2, tags: ["Rural", "Descubre", "Patrimonio", "Aventura", "Agua", "Naturaleza"], persona: "Aventurero Silvestre", personaFoto: "person3", estado: "Nuevo León", comunidad: "Cieneguilla", titulo: "Río Pilón", descripcion: "Explora las cristalinas aguas del Río Pilón, un lugar perfecto para practicar senderismo y nadar en un entorno natural virgen.", coordinates: [25.343784, -99.891594], ubicacion: "Cieneguilla, Nuevo León", fotos: ["pilon1", "pilon2", "pilon3"], idioma: "Otomí", favorited: false, visited: false, estrella: 5))
-
+                    
                     modelContext.insert(Patrimonio(id: 3, tags: ["Rural", "Descubre", "Patrimonio", "Cultura", "Historia", "Rural"], persona: "Historias del Norte", personaFoto: "person4", estado: "Nuevo León", comunidad: "Galeana", titulo: "La Poza de la Gloria", descripcion: "Visita este lugar lleno de historia, conocido por haber sido un refugio durante la Guerra de Reforma, rodeado de naturaleza.", coordinates: [24.836251, -100.104105], ubicacion: "Galeana, Nuevo León", fotos: ["poza1", "poza2", "poza3"], idioma: "Totonaco", favorited: false, visited: false, estrella: 4))
-
+                    
                     modelContext.insert(Patrimonio(id: 4, tags: ["Rural", "Descubre", "Patrimonio", "Aventura", "Cuevas", "Exploración"], persona: "Guía Subterráneo", personaFoto: "person5", estado: "Nuevo León", comunidad: "Bustamante", titulo: "Grutas de Bustamante", descripcion: "Adéntrate en las profundas y misteriosas grutas, un viaje subterráneo que te llevará a descubrir formaciones naturales increíbles.", coordinates: [26.540776, -100.499512], ubicacion: "Bustamante, Nuevo León", fotos: ["grutas1", "grutas2", "grutas3"], idioma: "Náhuatl", favorited: false, visited: false, estrella: 5))
-
+                    
                     modelContext.insert(Patrimonio(id: 5, tags: ["Rural", "Pueblo Mágico", "Descubre", "Patrimonio", "Cultura", "Tradición", "Rural"], persona: "Cronista Regional", personaFoto: "person6", estado: "Nuevo León", comunidad: "Aramberri", titulo: "Pueblo Mágico de Aramberri", descripcion: "Descubre las leyendas y tradiciones de este tranquilo pueblo, conocido por sus antiguas haciendas y artesanías tradicionales.", coordinates: [24.039659, -99.800330], ubicacion: "Aramberri, Nuevo León", fotos: ["aramberri1", "aramberri2", "aramberri3"], idioma: "Huichol", favorited: false, visited: false, estrella: 4))
-
+                    
                     modelContext.insert(Patrimonio(id: 6, tags: ["Rural", "Patrimonio", "Aventura", "Escalada", "Montaña"], persona: "Escalador Extremo", personaFoto: "person7", estado: "Nuevo León", comunidad: "Potrero Chico", titulo: "Escalada en Potrero Chico", descripcion: "Disfruta de uno de los mejores sitios de escalada en México, donde los acantilados de roca caliza ofrecen retos únicos para todos los niveles.", coordinates: [25.964460, -100.455560], ubicacion: "Potrero Chico, Hidalgo", fotos: ["potrero1", "potrero2", "potrero3"], idioma: "Totonaco", favorited: false, visited: false, estrella: 5))
-
+                    
                     modelContext.insert(Patrimonio(id: 7, tags: ["Rural", "Descubre", "Patrimonio", "Cultura", "Aventura", "Bosque"], persona: "Guardian de la Sierra", personaFoto: "person8", estado: "Nuevo León", comunidad: "Zaragoza", titulo: "Sierra de Zaragoza", descripcion: "Un lugar donde se mezclan la cultura indígena y la naturaleza salvaje, ideal para practicar senderismo en medio de exuberantes paisajes boscosos.", coordinates: [23.987345, -99.771441], ubicacion: "Zaragoza, Nuevo León", fotos: ["zaragoza1", "zaragoza2", "zaragoza3"], idioma: "Maya", favorited: false, visited: false, estrella: 4))
-
+                    
                     modelContext.insert(Patrimonio(id: 8, tags: ["Rural","Patrimonio", "Aventura", "Ciclismo", "Naturaleza"], persona: "Ciclista de la Montaña", personaFoto: "person2", estado: "Nuevo León", comunidad: "San José de las Boquillas", titulo: "Ruta Ciclista Montemorelos", descripcion: "Una travesía en bicicleta a través de los paisajes montañosos de Montemorelos, perfecta para los amantes del ciclismo de montaña.", coordinates: [25.198034, -99.828610], ubicacion: "San José de las Boquillas, Montemorelos", fotos: ["montemorelos1", "montemorelos2", "montemorelos3"], idioma: "Purépecha", favorited: false, visited: false, estrella: 5))
-
+                    
                     modelContext.insert(Patrimonio(id: 9, tags: ["Rural", "Descubre", "Patrimonio", "Cultura", "Arqueología", "Montaña"], persona: "Arqueólogo del Norte", personaFoto: "person1", estado: "Nuevo León", comunidad: "Rayones", titulo: "Sitio Arqueológico El Sabinito", descripcion: "Explora este antiguo sitio arqueológico rodeado de montañas, testimonio de las primeras civilizaciones que habitaron el noreste de México.", coordinates: [25.180836, -100.195612], ubicacion: "Rayones, Nuevo León", fotos: ["sabinito1", "sabinito2", "sabinito3"], idioma: "Nahuatl", favorited: false, visited: false, estrella: 5))
                 }
                 if estados.isEmpty {
@@ -105,22 +106,22 @@ struct onBoardingView: View {
                     modelContext.insert(Comunidad(id: 9, nombre: "Rayones", fotos: ["RAYONES1", "RAYONES2", "RAYONES3"], estado: "Nuevo León"))
                 }
                 
-                router.navigate(to: .contentView)
+                router.setPath([.contentView])
             }
         }
-        .padding()
     }
 }
 
 struct continueButton: View {
     @Binding var pageState: Int
+    var isFirst: Bool
     var body: some View {
         Button{
             pageState += 1
         } label: {
-            Text("Continue")
+            Text("Siguiente")
                 .frame(width: 350, height: 50)
-                .background(Color.black.opacity(0.8))
+                .background(isFirst ? .darkPink : .rosaMex)
                 .foregroundColor(.white)
                 .cornerRadius(10)
                 .padding(.bottom, 45)
@@ -130,221 +131,349 @@ struct continueButton: View {
 
 struct firstOnboardingView: View {
     @Binding var pageState: Int
+    
+    @State private var showImage1 = false
+    @State private var showImage2 = false
+    @State private var showImage3 = false
+    @State private var showImage4 = false
+    
     var body: some View {
-        HeaderAppViewOnboarding()
-        
-        Spacer()
-        
-        Text("Bienvenido a Herencia Viva")
-            .font(.system(size: 40))
-            .fontWeight(.semibold)
-            .padding(.bottom, 20)
-        
-        Rectangle()
-            .fill(Color.gray.opacity(0.5))
-            .frame(width: 300, height: 300)
-        
-        Spacer()
-        
-        continueButton(pageState: $pageState)
+        ZStack {
+            Color.rosaMex.ignoresSafeArea()
+            VStack {
+                HeaderAppViewOnboarding(pageState: pageState, isFirst: true)
+                
+                Spacer()
+                
+                VStack {
+                    ZStack {
+                        if showImage1 {
+                            Image("onboarding1")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 250)
+                                .offset(x: -80, y: -50)
+                                .wiggleAnimation()
+                        }
+                        
+                        if showImage2 {
+                            Image("onboarding2")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 250)
+                                .offset(x: 75, y: -65)
+                                .wiggleAnimation()
+                        }
+                        
+                        if showImage3 {
+                            Image("onboarding3")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 250)
+                                .offset(x: -80, y: 170)
+                                .wiggleAnimation()
+                        }
+                        
+                        if showImage4 {
+                            Image("onboarding4")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 200)
+                                .offset(x: 105, y: 150)
+                                .wiggleAnimation()
+                        }
+                    }
+                    .frame(height: 350)
+                    .onAppear {
+                        showImage1WithAnimation(after: 0)
+                        showImage2WithAnimation(after: 0.3)
+                        showImage3WithAnimation(after: 0.6)
+                        showImage4WithAnimation(after: 0.9)
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Bienvenido a")
+                            .font(.system(size: 34))
+                            .fontWeight(.bold)
+                            .foregroundStyle(.white) +
+                        Text(" Herencia Viva")
+                            .foregroundStyle(.deepPink)
+                            .font(.system(size: 34))
+                            .fontWeight(.bold)
+                        
+                        Text("Descubre los lugares más ocultos e impresionantes de México con nosotros.")
+                            .foregroundStyle(.white)
+                            .font(.system(size: 16))
+                            .fontWeight(.semibold)
+                    }
+                    .offset(x: -20)
+                    .padding(.top, 50)
+                    
+                    Spacer()
+                    
+                    continueButton(pageState: $pageState, isFirst: true)
+                }
+            }
+            .padding()
+        }
+    }
+    
+    // Function to trigger haptic feedback
+    func triggerHapticFeedback() {
+        let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+        impactFeedback.impactOccurred()
+    }
+    
+    // Functions to show images with animations
+    private func showImage1WithAnimation(after delay: TimeInterval) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            withAnimation {
+                showImage1 = true
+                triggerHapticFeedback()
+            }
+        }
+    }
+    
+    private func showImage2WithAnimation(after delay: TimeInterval) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            withAnimation {
+                showImage2 = true
+                triggerHapticFeedback()
+            }
+        }
+    }
+    
+    private func showImage3WithAnimation(after delay: TimeInterval) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            withAnimation {
+                showImage3 = true
+                triggerHapticFeedback()
+            }
+        }
+    }
+    
+    private func showImage4WithAnimation(after delay: TimeInterval) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            withAnimation {
+                showImage4 = true
+                triggerHapticFeedback()
+            }
+        }
     }
 }
-
 struct secondOnboardingView: View {
     @Binding var pageState: Int
     var body: some View {
-        
-        HeaderAppViewOnboarding()
-        
         VStack{
-            HStack{
-                Text("Explora el patrimonio MX")
-                    .font(.system(size: 25))
-                Spacer()
-            }
+            HeaderAppViewOnboarding(pageState: pageState, isFirst: false)
             
-            HStack{
-                Text("Descripcion")
-                    .font(.system(size: 20))
-                Spacer()
+            VStack{
+                HStack{
+                    Text("Explora el patrimonio MX")
+                        .font(.system(size: 25))
+                    Spacer()
+                }
+                
+                HStack{
+                    Text("Descripcion")
+                        .font(.system(size: 20))
+                    Spacer()
+                }
             }
-        }
-        .padding(.horizontal,30)
-        .padding(.bottom)
-        
-        VStack{
-            HStack{
-                Circle()
-                    .foregroundStyle(.gray.opacity(0.5))
-                    .frame(width: 40, height: 40)
-                Text("Lorem Ipsum")
-                Spacer()
-                Text("Ciudad, Estado")
-            }
-            Text("Descripcion de patrimonio de la comunidad")
+            .padding(.horizontal,30)
+            .padding(.bottom)
             
-            Rectangle()
-                .fill(Color.gray.opacity(0.5))
-                .frame(width: 300, height: 250)
+            VStack{
+                HStack{
+                    Circle()
+                        .foregroundStyle(.gray.opacity(0.5))
+                        .frame(width: 40, height: 40)
+                    Text("Lorem Ipsum")
+                    Spacer()
+                    Text("Ciudad, Estado")
+                }
+                Text("Descripcion de patrimonio de la comunidad")
+                
+                Rectangle()
+                    .fill(Color.gray.opacity(0.5))
+                    .frame(width: 300, height: 250)
+                
+                HStack(spacing: 15){
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 90, height: 25)
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 90, height: 25)
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 90, height: 25)
+                }
+                .frame(width: 300)
+            }
+            .padding(.horizontal)
+            
+            Spacer()
             
             HStack(spacing: 15){
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color.gray.opacity(0.5))
-                    .frame(width: 90, height: 25)
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color.gray.opacity(0.5))
-                    .frame(width: 90, height: 25)
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color.gray.opacity(0.5))
-                    .frame(width: 90, height: 25)
+                Circle()
+                    .foregroundStyle(.gray)
+                    .frame(width: 15, height: 15)
+                Circle()
+                    .foregroundStyle(.gray.opacity(0.5))
+                    .frame(width: 15, height: 15)
+                Circle()
+                    .foregroundStyle(.gray.opacity(0.5))
+                    .frame(width: 15, height: 15)
             }
-            .frame(width: 300)
+            
+            Spacer()
+            
+            continueButton(pageState: $pageState, isFirst: false)
         }
-        .padding(.horizontal)
-        
-        Spacer()
-        
-        HStack(spacing: 15){
-            Circle()
-                .foregroundStyle(.gray)
-                .frame(width: 15, height: 15)
-            Circle()
-                .foregroundStyle(.gray.opacity(0.5))
-                .frame(width: 15, height: 15)
-            Circle()
-                .foregroundStyle(.gray.opacity(0.5))
-                .frame(width: 15, height: 15)
-        }
-        
-        Spacer()
-        
-        continueButton(pageState: $pageState)
+        .padding()
     }
 }
 
 struct thirdOnboardingView: View {
     @Binding var pageState: Int
     var body: some View {
-        
-        HeaderAppViewOnboarding()
-        
         VStack{
-            HStack{
-                Text("Descubre a las Comunidades Rurales")
-                    .font(.system(size: 25))
-                Spacer()
-            }
-            
-            HStack{
-                Text("Descripcion")
-                    .font(.system(size: 20))
-                Spacer()
-            }
-        }
-        .padding(.horizontal,30)
-        .padding(.bottom)
-        
-        RoundedRectangle(cornerRadius: 10)
-            .frame(width: 300, height: 250)
-            .foregroundStyle(.gray.opacity(0.5))
-            .padding(.bottom,30)
-        
-        HStack(spacing: 45){
-            VStack{
-                Circle()
-                    .foregroundStyle(.gray.opacity(0.5))
-                    .frame(width: 65, height: 65)
-                Text("Award-1")
-            }
+            HeaderAppViewOnboarding(pageState: pageState, isFirst: false)
             
             VStack{
-                Circle()
-                    .foregroundStyle(.gray.opacity(0.5))
-                    .frame(width: 65, height: 65)
-                Text("Award-2")
+                HStack{
+                    Text("Descubre a las Comunidades Rurales")
+                        .font(.system(size: 25))
+                    Spacer()
+                }
+                
+                HStack{
+                    Text("Descripcion")
+                        .font(.system(size: 20))
+                    Spacer()
+                }
             }
+            .padding(.horizontal,30)
+            .padding(.bottom)
             
-            VStack{
-                Circle()
-                    .foregroundStyle(.gray.opacity(0.5))
-                    .frame(width: 65, height: 65)
-                Text("Award-3")
-            }
-        }
-        .padding(.bottom,20)
-        
-        HStack(spacing: 15){
-            Circle()
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 300, height: 250)
                 .foregroundStyle(.gray.opacity(0.5))
-                .frame(width: 15, height: 15)
-            Circle()
-                .foregroundStyle(.gray)
-                .frame(width: 15, height: 15)
-            Circle()
-                .foregroundStyle(.gray.opacity(0.5))
-                .frame(width: 15, height: 15)
+                .padding(.bottom,30)
+            
+            HStack(spacing: 45){
+                VStack{
+                    Circle()
+                        .foregroundStyle(.gray.opacity(0.5))
+                        .frame(width: 65, height: 65)
+                    Text("Award-1")
+                }
+                
+                VStack{
+                    Circle()
+                        .foregroundStyle(.gray.opacity(0.5))
+                        .frame(width: 65, height: 65)
+                    Text("Award-2")
+                }
+                
+                VStack{
+                    Circle()
+                        .foregroundStyle(.gray.opacity(0.5))
+                        .frame(width: 65, height: 65)
+                    Text("Award-3")
+                }
+            }
+            .padding(.bottom,20)
+            
+            HStack(spacing: 15){
+                Circle()
+                    .foregroundStyle(.gray.opacity(0.5))
+                    .frame(width: 15, height: 15)
+                Circle()
+                    .foregroundStyle(.gray)
+                    .frame(width: 15, height: 15)
+                Circle()
+                    .foregroundStyle(.gray.opacity(0.5))
+                    .frame(width: 15, height: 15)
+            }
+            .padding(.bottom,20)
+            
+            Spacer()
+            
+            continueButton(pageState: $pageState, isFirst: false)
         }
-        .padding(.bottom,20)
-        
-        Spacer()
-        
-        continueButton(pageState: $pageState)
+        .padding()
     }
 }
 
 struct fourthOnboardingView: View {
     @Binding var pageState: Int
     var body: some View {
-        HeaderAppViewOnboarding()
-        
-        Spacer()
-        
         VStack{
-            HStack{
-                Circle()
-                    .foregroundStyle(.gray.opacity(0.5))
-                    .frame(width: 40, height: 40)
-                Text("Team Nojoch")
-                Spacer()
-                Text("Ciudad, Estado")
-            }
+            HeaderAppViewOnboarding(pageState: pageState, isFirst: false)
             
-            Rectangle()
-                .fill(Color.gray.opacity(0.5))
-                .frame(width: 300, height: 250)
+            Spacer()
+            
+            VStack{
+                HStack{
+                    Circle()
+                        .foregroundStyle(.gray.opacity(0.5))
+                        .frame(width: 40, height: 40)
+                    Text("Team Nojoch")
+                    Spacer()
+                    Text("Ciudad, Estado")
+                }
+                
+                Rectangle()
+                    .fill(Color.gray.opacity(0.5))
+                    .frame(width: 300, height: 250)
+                
+                HStack(spacing: 15){
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 90, height: 25)
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 90, height: 25)
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(Color.gray.opacity(0.5))
+                        .frame(width: 90, height: 25)
+                }
+                .frame(width: 300)
+            }
+            .padding(.horizontal)
+            
+            Spacer()
             
             HStack(spacing: 15){
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color.gray.opacity(0.5))
-                    .frame(width: 90, height: 25)
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color.gray.opacity(0.5))
-                    .frame(width: 90, height: 25)
-                RoundedRectangle(cornerRadius: 5)
-                    .fill(Color.gray.opacity(0.5))
-                    .frame(width: 90, height: 25)
+                Circle()
+                    .foregroundStyle(.gray.opacity(0.5))
+                    .frame(width: 15, height: 15)
+                Circle()
+                    .foregroundStyle(.gray.opacity(0.5))
+                    .frame(width: 15, height: 15)
+                Circle()
+                    .foregroundStyle(.gray)
+                    .frame(width: 15, height: 15)
             }
-            .frame(width: 300)
+            
+            Spacer()
+            
+            continueButton(pageState: $pageState, isFirst: false)
         }
-        .padding(.horizontal)
-        
-        Spacer()
-        
-        HStack(spacing: 15){
-            Circle()
-                .foregroundStyle(.gray.opacity(0.5))
-                .frame(width: 15, height: 15)
-            Circle()
-                .foregroundStyle(.gray.opacity(0.5))
-                .frame(width: 15, height: 15)
-            Circle()
-                .foregroundStyle(.gray)
-                .frame(width: 15, height: 15)
-        }
-        
-        Spacer()
-        
-        continueButton(pageState: $pageState)
+        .padding()
+    }
+}
+
+extension View {
+    func wiggleAnimation() -> some View {
+        self
+            .rotationEffect(.degrees(Double.random(in: -5...5)))
+            .scaleEffect(1.05)
+            .animation(Animation.easeInOut(duration: 2.5).repeatCount(15, autoreverses: true), value: UUID())
     }
 }
 
