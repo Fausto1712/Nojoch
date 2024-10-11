@@ -16,11 +16,16 @@ struct comunidadCard:View {
                 .frame(width: 50, height: 50)
                 .background(Color.gray.opacity(0.2))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                .overlay( RoundedRectangle(cornerRadius: 10) .stroke(.gray, lineWidth: 1))
             
-            Text(comunidad.nombre)
-                .font(.system(size: 20))
-                .fontWeight(.semibold)
+            VStack(alignment: .leading){
+                Text(comunidad.nombre)
+                    .font(.system(size: 20))
+                    .fontWeight(.semibold)
+                
+                Text(comunidad.estado)
+                    .font(.system(size: 16))
+                    .fontWeight(.light)
+            }
             
             Spacer()
             
@@ -28,6 +33,8 @@ struct comunidadCard:View {
                 .resizable()
                 .frame(width: 10, height: 20)
         }
+        .padding(8)
+        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white).shadow(radius: 3))
         .padding(.horizontal)
     }
 }

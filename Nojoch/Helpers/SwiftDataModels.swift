@@ -51,11 +51,13 @@ final class Patrimonio : Identifiable {
 final class Estado : Identifiable {
     var id: Int
     var nombre: String
+    var icono: String
     var fotos: [String]
     
-    init(id: Int, nombre: String, fotos: [String]) {
+    init(id: Int, nombre: String, icono: String, fotos: [String]) {
         self.id = id
         self.nombre = nombre
+        self.icono = icono
         self.fotos = fotos
     }
 }

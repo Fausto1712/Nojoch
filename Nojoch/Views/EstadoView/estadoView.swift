@@ -145,5 +145,5 @@ struct estadoView: View {
 
 
 #Preview {
-    estadoView(estado: Estado(id: 18, nombre: "Nuevo León", fotos: ["NL1", "NL2", "NL3"]))
+    estadoView(estado: Estado(id: 18, nombre: "Nuevo León", icono: "Im2", fotos: ["NL1", "NL2", "NL3"]))
 }
