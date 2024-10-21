@@ -53,12 +53,14 @@ final class Estado : Identifiable {
     var nombre: String
     var icono: String
     var fotos: [String]
+    var ubicacion: String
     
-    init(id: Int, nombre: String, icono: String, fotos: [String]) {
+    init(id: Int, nombre: String, icono: String, fotos: [String], ubicacion: String) {
         self.id = id
         self.nombre = nombre
         self.icono = icono
         self.fotos = fotos
+        self.ubicacion = ubicacion
     }
 }
 
@@ -68,12 +70,14 @@ final class Comunidad : Identifiable {
     var nombre: String
     var fotos: [String]
     var estado: String
+    var coordenadas: [Double]
     
-    init(id: Int, nombre: String, fotos: [String], estado: String) {
+    init(id: Int, nombre: String, fotos: [String], estado: String, coordenadas: [Double]) {
         self.id = id
         self.nombre = nombre
         self.fotos = fotos
         self.estado = estado
+        self.coordenadas = coordenadas
     }
 }
 

@@ -9,8 +9,6 @@ import SwiftUI
 import SwiftData
 
 struct estadoView: View {
-    @EnvironmentObject var router: Router
-    
     @State var estado: Estado
     @State var tags: [String] = []
     @State var filteredPatrimonios: [Patrimonio] = []
@@ -22,108 +20,27 @@ struct estadoView: View {
     @Query private var patrimonios: [Patrimonio]
     
     var body: some View {
-        VStack{
-            HeaderAppViewComponent()
-                .padding(.horizontal, 30)
-            
-            TabView {
-                ForEach(estado.fotos, id: \.self) { foto in
-                    Image(foto)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 350, height: 200)
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
-                        .clipped()
-                }
+        ZStack{
+            VStack{
+                headerEstado(estado: estado)
+                Spacer()
             }
-            .frame(width: 350, height: 200)
-            .tabViewStyle(PageTabViewStyle())
             
-            Text(estado.nombre)
-                .font(.system(size: 25))
-                .fontWeight(.semibold)
-            ScrollView{
-                HStack{
-                    Text("Tags de interes")
-                        .fontWeight(.semibold)
-                        .padding(.leading,20)
-                    Spacer()
-                }
+            VStack{
+                descripcionEstado(estado: estado, filteredComunidades: filteredComunidades)
                 
-                ScrollView(.horizontal){
-                    HStack{
-                        ForEach(tags, id: \.self){ tag in
-                            VStack{
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(.gray.opacity(0.2))
-                                    .frame(width: 60, height: 60)
-                                
-                                Text(tag)
-                                    .font(.system(size: 12))
-                            }
-                        }
-                    }
+                ScrollView{
+                    tagsEstado(tags: tags)
+                    
+                    postsEstado(filteredPatrimonios: filteredPatrimonios)
+                    
+                    comunidadesEstado(filteredComunidades: filteredComunidades)
                 }
-                .padding(.leading, 20)
-                .padding(.bottom)
                 .scrollIndicators(.hidden)
-                
-                HStack{
-                    Text("Patrimonios Recientes")
-                        .fontWeight(.semibold)
-                        .padding(.leading,20)
-                    Spacer()
-                }
-                
-                ScrollView(.horizontal){
-                    HStack{
-                        ForEach(filteredPatrimonios, id: \.self){ patrimonio in
-                            VStack{
-                                Image(patrimonio.fotos[0])
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 220, height: 120)
-                                    .clipShape(RoundedRectangle(cornerRadius: 15))
-                                    .clipped()
-                                
-                                HStack{
-                                    Image(patrimonio.personaFoto)
-                                        .resizable()
-                                        .frame(width: 30, height: 30)
-                                        .clipShape(Circle())
-                                    Text(patrimonio.persona)
-                                        .font(.system(size: 10))
-                                    Spacer()
-                                    Text(patrimonio.idioma)
-                                        .font(.system(size: 10))
-                                }
-                            }
-                            .onTapGesture {
-                                router.navigate(to: .patrimonio(patrimonio: patrimonio))
-                            }
-                        }
-                    }
-                }
-                .padding(.leading, 20)
-                .padding(.bottom)
-                .scrollIndicators(.hidden)
-                
-                HStack{
-                    Text("Comunidades")
-                        .fontWeight(.semibold)
-                        .padding(.leading,20)
-                    Spacer()
-                }
-                
-                ForEach(filteredComunidades, id: \.self){ comunidad in
-                    HStack{
-                        comunidadCard(comunidad: comunidad)
-                            .onTapGesture { router.navigate(to: .comunidadView(comunidad: comunidad)) }
-                    }
-                }
             }
-            .scrollIndicators(.hidden)
+            .padding(.top, 260)
         }
+        .ignoresSafeArea()
         .navigationBarBackButtonHidden()
         .onAppear {
             filteredPatrimonios = patrimonios.filter{ $0.estado == estado.nombre }
@@ -143,7 +60,142 @@ struct estadoView: View {
     }
 }
 
+struct headerEstado:View {
+    var estado: Estado
+    var body: some View {
+        ZStack{
+            VStack{
+                TabView {
+                    ForEach(estado.fotos, id: \.self) { foto in
+                        Image(foto)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(height: 350)
+                    }
+                }
+                .tabViewStyle(PageTabViewStyle())
+                .onAppear {
+                    UIPageControl.appearance().backgroundStyle = .prominent
+                }
+            }
+            
+            VStack{
+                HeaderAppViewComponent()
+                    .padding(.horizontal, 30)
+                    .padding(.top, 50)
+                Spacer()
+            }
+        }
+        .frame(height: 270)
+    }
+}
+
+struct descripcionEstado:View {
+    var estado: Estado
+    var filteredComunidades: [Comunidad]
+    var body: some View {
+        HStack{
+            VStack(alignment: .leading){
+                Text(estado.nombre)
+                    .font(.system(size: 28))
+                    .fontWeight(.bold)
+                    .foregroundStyle(.rosaMex)
+                
+                Text(estado.ubicacion)
+                    .foregroundStyle(.gray)
+            }
+            
+            Spacer()
+            
+            Text("\(filteredComunidades.count) comunidades")
+                .fontWeight(.semibold)
+                .font(.system(size: 17))
+                .foregroundStyle(.rosaMex)
+        }
+        .padding()
+    }
+}
+
+struct tagsEstado: View {
+    var tags: [String]
+    var body: some View {
+        HStack{
+            Text("Tags")
+                .fontWeight(.semibold)
+                .foregroundStyle(.rosaMex) +
+            Text(" de interes")
+                .fontWeight(.semibold)
+            Spacer()
+        }
+        .padding(.leading,20)
+        
+        ScrollView(.horizontal){
+            HStack{
+                ForEach(tags, id: \.self){ tag in
+                    tagCard(tag: tag)
+                }
+            }
+            .padding(.bottom, 5)
+        }
+        .frame(height: 50)
+        .padding(.leading, 20)
+        .padding(.bottom)
+        .scrollIndicators(.hidden)
+    }
+}
+
+struct postsEstado:View {
+    var filteredPatrimonios: [Patrimonio]
+    var body: some View {
+        HStack{
+            Text("Posts")
+                .fontWeight(.semibold)
+                .foregroundStyle(.rosaMex) +
+            Text(" recientes")
+                .fontWeight(.semibold)
+            Spacer()
+        }
+        .padding(.leading,20)
+        
+        ScrollView(.horizontal){
+            HStack{
+                ForEach(filteredPatrimonios, id: \.self){ patrimonio in
+                    patrimonioEstadoCard(patrimonio: patrimonio)
+                }
+            }
+            .padding(.bottom, 5)
+        }
+        .padding(.leading, 20)
+        .padding(.bottom)
+        .scrollIndicators(.hidden)
+    }
+}
+
+struct comunidadesEstado:View {
+    @EnvironmentObject var router: Router
+    
+    var filteredComunidades: [Comunidad]
+    
+    var body: some View {
+        HStack{
+            Text("Comunidades")
+                .fontWeight(.semibold)
+                .foregroundStyle(.rosaMex) +
+            Text(" del estado")
+                .fontWeight(.semibold)
+            Spacer()
+        }
+        .padding(.leading,20)
+        
+        ForEach(filteredComunidades, id: \.self){ comunidad in
+            HStack{
+                comunidadCard(comunidad: comunidad)
+                    .onTapGesture { router.navigate(to: .comunidadView(comunidad: comunidad)) }
+            }
+        }
+    }
+}
 
 #Preview {
-    estadoView(estado: Estado(id: 18, nombre: "Nuevo León", icono: "Im2", fotos: ["NL1", "NL2", "NL3"]))
+    estadoView(estado: Estado(id: 18, nombre: "Nuevo León", icono: "Im2", fotos: ["NL1", "NL2", "NL3"], ubicacion: "Norte de Mexico"))
 }

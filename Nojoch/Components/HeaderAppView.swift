@@ -107,24 +107,32 @@ struct HeaderAppViewComponent: View {
         VStack{
             HStack{
                 Button{
-                    router.navigateBack()
+                    router.navigateToRoot()
                 } label: {
-                    Image(systemName: "chevron.left")
-                        .resizable()
-                        .foregroundStyle(.black)
-                        .frame(width: 10, height: 20)
+                    Circle()
+                        .frame(width: 36)
+                        .foregroundStyle(.white)
+                        .overlay{
+                            Image(systemName: "chevron.left")
+                                .resizable()
+                                .foregroundStyle(.black)
+                                .frame(width: 10, height: 20)
+                                .fontWeight(.bold)
+                        }
                 }
                 
                 Spacer()
-                
-                Image(systemName: "heart")
-                    .resizable()
-                    .frame(width: 20, height: 20)
+                Circle()
+                    .frame(width: 36)
+                    .foregroundStyle(.white)
+                    .overlay{
+                        Image(systemName: "bookmark")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 15)
+                            .fontWeight(.bold)
+                    }
             }
-            
-            Divider()
-                .background(Color.gray.opacity(0.5))
-                .padding(.horizontal, -16)
         }
     }
 }

@@ -40,5 +40,5 @@ struct comunidadCard:View {
 }
 
 #Preview {
-    comunidadCard(comunidad: Comunidad(id: 0, nombre: "Puerto Genovevo", fotos: ["PTGNV1", "PTGNV2", "PTGNV3"], estado: "Nuevo León"))
+    comunidadCard(comunidad: Comunidad(id: 0, nombre: "Puerto Genovevo", fotos: ["PTGNV1", "PTGNV2", "PTGNV3"], estado: "Nuevo León", coordenadas: [25.343257560651292, -100.18272756559038]))
 }

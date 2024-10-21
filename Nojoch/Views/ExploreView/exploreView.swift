@@ -48,7 +48,7 @@ struct exploreView: View {
                 Text("Comunidades")
                     .foregroundStyle(.black.opacity(0.8))
                     .padding(10)
-                    .background(selectedCategory == "Comunidades" ? .gray.opacity(0.2) : .clear)
+                    .background(selectedCategory == "Comunidad" ? .gray.opacity(0.2) : .clear)
                     .clipShape(RoundedRectangle(cornerRadius: 5))
                     .onTapGesture {
                         selectedCategory = "Comunidad"
@@ -119,31 +119,6 @@ struct exploreView: View {
         } else {
             return comunidades.filter { $0.nombre.lowercased().contains(searchText.lowercased()) }
         }
-    }
-}
-
-struct estadoCard:View {
-    var estado: Estado
-    var body: some View {
-        HStack{
-            Image(estado.icono)
-                .resizable()
-                .frame(width: 50, height: 50)
-                .shadow(radius: 5)
-            
-            Text(estado.nombre)
-                .font(.system(size: 20))
-                .fontWeight(.semibold)
-            
-            Spacer()
-            
-            Image(systemName: "chevron.right")
-                .resizable()
-                .frame(width: 10, height: 20)
-        }
-        .padding(8)
-        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white).shadow(radius: 3))
-        .padding(.horizontal)
     }
 }
 
