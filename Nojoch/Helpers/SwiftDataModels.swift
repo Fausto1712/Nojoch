@@ -81,6 +81,20 @@ final class Comunidad : Identifiable {
     }
 }
 
+struct Category: Identifiable {
+    var id: UUID
+    var color: Color
+    var chartValue: CGFloat
+    var name: String
+    
+    init(color: Color, chartValue: CGFloat, name: String) {
+        self.id = UUID()
+        self.color = color
+        self.chartValue = chartValue
+        self.name = name
+    }
+}
+
 extension Patrimonio {
     static var defaultEvent: Patrimonio {
         return Patrimonio(
