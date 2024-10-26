@@ -85,6 +85,7 @@ struct mapExploreView:View {
         }
         .onAppear{
             mapPatrimonios()
+            selectedTag = nil
         }
         .onChange(of: selectedTag) {
             if selectedTag != nil {
