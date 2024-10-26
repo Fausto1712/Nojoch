@@ -11,6 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		7BF4ACDF2CCC8B1F008AE959 /* Exceptions for "Nojoch" folder in "Nojoch" target */ = {
 		57E381D52CCC6697007871D9 /* Exceptions for "Nojoch" folder in "Nojoch" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -24,6 +25,7 @@
 		57A404932C9C6991002E1012 /* Nojoch */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				7BF4ACDF2CCC8B1F008AE959 /* Exceptions for "Nojoch" folder in "Nojoch" target */,
 				57E381D52CCC6697007871D9 /* Exceptions for "Nojoch" folder in "Nojoch" target */,
 			);
 			path = Nojoch;
@@ -277,7 +279,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -315,7 +317,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

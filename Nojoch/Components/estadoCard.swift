@@ -13,21 +13,26 @@ struct estadoCard:View {
         HStack{
             Image(estado.icono)
                 .resizable()
-                .frame(width: 50, height: 50)
-                .shadow(radius: 5)
+                .frame(width: 45, height: 45)
+                .shadow(radius: 4)
+                .padding(.leading, 4)
             
             Text(estado.nombre)
-                .font(.system(size: 20))
-                .fontWeight(.semibold)
+                .font(.custom(.raleway, style: .callout))
+                .fontWeight(.bold)
+                .padding(.leading, 8)
             
             Spacer()
             
             Image(systemName: "chevron.right")
                 .resizable()
+                .foregroundStyle(.secondary)
+                .fontWeight(.medium)
                 .frame(width: 10, height: 20)
+                .padding(.trailing, 8)
         }
         .padding(8)
-        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white).shadow(radius: 3))
+        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white).shadow(radius: 1.5))
         .padding(.horizontal)
     }
 }
