@@ -24,11 +24,9 @@ struct HeaderAppViewOnboarding: View {
     
     var body: some View {
         HStack{
-            Image("person1")
-                .resizable()
-                .frame(width: 50, height: 50)
-                .clipShape(Circle())
-                .foregroundStyle(.gray.opacity(0.5))
+            Circle()
+                .frame(width: 40, height: 40)
+                .foregroundStyle(isFirst ? .white : .gray.opacity(0.5))
             
             Spacer()
             if isFirst{
@@ -45,9 +43,12 @@ struct HeaderAppViewOnboarding: View {
             } label: {
                 Text("Saltar")
                     .foregroundStyle(isFirst ? .white : .gray)
+                    .font(.custom(.raleway, style: .headline))
+                    .fontWeight(.semibold)
             }
         }
-        .padding(.horizontal, 30)
+        .padding(.horizontal)
+        .padding(.top, 8)
     }
 }
 
@@ -151,6 +152,7 @@ struct OnboardingNavBar: View {
             .offset(x: -8)
         }
         .padding(.horizontal)
+        .offset(x: 12)
     }
 }
 
@@ -179,11 +181,12 @@ struct OnboardingNavBarWhite: View {
             .offset(x: -8)
         }
         .padding(.horizontal)
+        .offset(x: 12)
     }
 }
 
 #Preview {
-    HeaderAppView(headerTitle: "Herencia Viva")
-    HeaderAppViewComponent()
+    //HeaderAppView(headerTitle: "Herencia Viva")
+    //HeaderAppViewComponent()
     HeaderAppViewOnboarding(pageState: 0, isFirst: true)
 }

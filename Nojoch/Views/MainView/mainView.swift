@@ -120,6 +120,7 @@ struct patrimonioCard: View {
     var patrimonio: Patrimonio
     var body: some View {
         VStack{
+            // PERSONA, LUGAR Y MENU DE ELIPSIS
             HStack{
                 Image(patrimonio.personaFoto)
                     .resizable()
@@ -127,33 +128,37 @@ struct patrimonioCard: View {
                     .clipShape(Circle())
                 VStack(alignment: .leading){
                     Text(patrimonio.persona)
-                        .font(.system(size: 15))
+                        .font(.custom(.raleway, style: .subheadline))
                         .fontWeight(.semibold)
                     
                     HStack{
-                        Text("\(patrimonio.comunidad),")
-                            .font(.system(size: 12))
+                        Text("\(patrimonio.comunidad), ")
+                            .font(.custom(.raleway, style: .footnote))
                             .fontWeight(.semibold)
-                            .foregroundStyle(.rosaMex)
-                        
+                            .foregroundStyle(.rosaMex) +
                         Text(patrimonio.estado)
-                            .font(.system(size: 12))
+                            .font(.custom(.raleway, style: .footnote))
                             .fontWeight(.semibold)
-                            .foregroundStyle(.gray.opacity(0.8))
+                            .foregroundStyle(.secondary)
                     }
                 }
+                .padding(.leading, 4)
                 Spacer()
                 Image(systemName: "ellipsis")
-                    .foregroundStyle(.gray.opacity(0.8))
+                    .foregroundStyle(.secondary)
                     .fontWeight(.bold)
             }
-            .padding(.vertical, 10)
-            .padding(.horizontal, 20)
             
-            Text(patrimonio.descripcion)
-                .font(.system(size: 15))
-                .padding(.horizontal, 20)
+            // DESCRIPCIÓN DEL PATRIMONIO
+            if patrimonio.descripcion != ""{
+                Text(patrimonio.descripcion)
+                    .font(.custom(.raleway, style: .custom14))
+                    .fontWeight(.medium)
+                    .padding(.top, 4)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
             
+            // CONTENEDOR DE IMAGENES
             TabView {
                 ForEach(patrimonio.fotos, id: \.self) { foto in
                     Image(foto)
@@ -161,43 +166,46 @@ struct patrimonioCard: View {
                         .scaledToFill()
                 }
             }
-            .frame(height: 250)
-            .clipShape(RoundedRectangle(cornerRadius: 15))
+            .frame(height: 265)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
             .tabViewStyle(PageTabViewStyle())
-            .padding(.horizontal, 20)
             
+            // SCROLLABLE TAGS
             ScrollView(.horizontal){
                 HStack{
                     ForEach(patrimonio.tags, id: \.self) { tag in
-                        HStack(spacing: 10){
+                        HStack(spacing: 8){
                             Circle()
                                 .frame(width: 10, height: 10)
                                 .foregroundStyle(.white)
                             Text(tag)
                                 .foregroundStyle(.white)
-                                .font(.system(size: 16))
+                                .font(.custom(.raleway, style: .footnote))
+                                .fontWeight(.semibold)
                         }
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 15)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 12)
                         .background(Color.tagColors[tag] ?? .rosaMex)
-                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
                     }
                 }
             }
-            .padding(.leading, 20)
-            .padding(.top, 5)
+            .scrollIndicators(.hidden)
+            .padding([.top, .bottom], 4)
             
+            // FECHA
             HStack{
                 Text(patrimonio.fecha.toSpanishFormattedString())
-                    .font(.system(size: 12))
-                    .foregroundStyle(.gray.opacity(0.8))
+                    .font(.custom(.raleway, style: .caption))
+                    .fontWeight(.regular)
+                    .foregroundStyle(.secondary)
                 Spacer()
             }
-            .padding(.leading, 20)
+            .padding(.top, 4)
         }
     }
 }
 
 #Preview {
-    mainView()
+    //mainView()
 }

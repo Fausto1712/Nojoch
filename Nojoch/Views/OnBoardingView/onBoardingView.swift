@@ -51,11 +51,13 @@ struct continueButton: View {
             pageState += 1
         } label: {
             Text("Siguiente")
-                .frame(width: 350, height: 50)
+                .frame(maxWidth: .infinity, maxHeight: 51)
                 .background(isFirst ? .darkPink : .rosaMex)
                 .foregroundColor(.white)
-                .cornerRadius(10)
-                .padding(.bottom, 45)
+                .font(.custom(.poppinsSemiBold, style: .callout))
+                .fontWeight(.semibold)
+                .cornerRadius(12)
+                .padding(.top, 20)
         }
     }
 }
@@ -73,8 +75,12 @@ struct firstOnboardingView: View {
             Color.rosaMex.ignoresSafeArea()
             VStack {
                 HeaderAppViewOnboarding(pageState: pageState, isFirst: true)
-                
-                Spacer()
+            }
+            .frame(maxHeight: .infinity, alignment: .top)
+            
+            Spacer()
+            
+            VStack {
                 
                 VStack {
                     ZStack {
@@ -92,7 +98,7 @@ struct firstOnboardingView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 250)
-                                .offset(x: 75, y: -65)
+                                .offset(x: 75, y: -105)
                                 .wiggleAnimation()
                         }
                         
@@ -101,7 +107,7 @@ struct firstOnboardingView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 250)
-                                .offset(x: -80, y: 170)
+                                .offset(x: -80, y: 140)
                                 .wiggleAnimation()
                         }
                         
@@ -110,7 +116,7 @@ struct firstOnboardingView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 200)
-                                .offset(x: 105, y: 150)
+                                .offset(x: 100, y: 140)
                                 .wiggleAnimation()
                         }
                     }
@@ -121,33 +127,31 @@ struct firstOnboardingView: View {
                         showImage3WithAnimation(after: 0.6)
                         showImage4WithAnimation(after: 0.9)
                     }
-                    
-                    Spacer()
-                    
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Bienvenido a")
-                            .font(.system(size: 34))
-                            .fontWeight(.bold)
-                            .foregroundStyle(.white) +
-                        Text(" Herencia Viva")
-                            .foregroundStyle(.deepPink)
-                            .font(.system(size: 34))
-                            .fontWeight(.bold)
-                        
-                        Text("Descubre los lugares más ocultos e impresionantes de México con nosotros.")
-                            .foregroundStyle(.white)
-                            .font(.system(size: 16))
-                            .fontWeight(.semibold)
-                    }
-                    .offset(x: -20)
-                    .padding(.top, 50)
-                    
-                    Spacer()
-                    
-                    continueButton(pageState: $pageState, isFirst: true)
                 }
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Bienvenido a\n")
+                        .font(.custom(.poppinsBold, style: .largeTitle))
+                        .foregroundStyle(.white) +
+                    Text("Herencia Viva")
+                        .foregroundStyle(.deepPink)
+                        .font(.custom(.poppinsBold, style: .largeTitle))
+                    
+                    Text("Descubre los lugares más ocultos e impresionantes de México con nosotros.")
+                        .foregroundStyle(.white)
+                        .font(.custom(.raleway, style: .callout))
+                        .fontWeight(.semibold)
+                        .lineSpacing(4)
+                    
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, 72)
+                
+                
+                continueButton(pageState: $pageState, isFirst: true)
             }
             .padding()
+            .padding(.top, 36)
         }
     }
     
@@ -200,34 +204,33 @@ struct secondOnboardingView: View {
     var body: some View {
         VStack{
             HeaderAppViewOnboarding(pageState: pageState, isFirst: false)
+        }
+        
+        VStack(alignment: .leading){
+            Text("Descubre")
+                .font(.custom(.poppinsBold, style: .largeTitle))
+            Text("comunidades")
+                .font(.custom(.poppinsBold, style: .largeTitle))
+                .foregroundStyle(.rosaMex)
+                .padding(.top, -36)
             
-            VStack(alignment: .leading){
-                Text("Descubre")
-                    .font(.system(size: 34))
-                    .fontWeight(.bold)
-                
-                Text("comunidades")
-                    .font(.system(size: 34))
-                    .fontWeight(.bold)
-                    .foregroundStyle(.rosaMex)
-                
-                HStack{
-                    Text("Conoce lo que las comunidades tienen para ofrecer mediante posts en tu feed.")
-                        .font(.system(size: 16))
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.gray)
-                    Spacer()
-                }
-                .frame(width:362, height: 50)
-            }
+            
+            Text("Conoce lo que las comunidades tienen \npara ofrecer mediante posts en tu feed.")
+                .font(.custom(.raleway, style: .callout))
+                .fontWeight(.semibold)
+                .foregroundStyle(.secondary)
             
             patrimonioCard(patrimonio: Patrimonio(id: 0, tags: ["Rural", "Descubre", "Patrimonio", "Hike", "Aventura", "Agua"], persona: "La Cumbre Cotidiana", personaFoto: "person5", estado: "Nuevo León", comunidad: "Puerto Genovevo", titulo: "Cañon Matacanes", descripcion: "", coordinates: [25.371573866134465, -100.15547982938328], ubicacion: "Cola de caballo", fotos: ["matacanes1", "matacanes2", "matacanes3"], idioma: "Náhuatl", favorited: false, visited: false, estrella: 5))
+                .padding(.top, 12)
             
             Spacer()
             
             continueButton(pageState: $pageState, isFirst: false)
+                .padding(.bottom, 36)
         }
-        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal)
+        
     }
 }
 
@@ -237,28 +240,30 @@ struct thirdOnboardingView: View {
     @Binding var pageState: Int
     
     var body: some View {
+        
         VStack{
             HeaderAppViewOnboarding(pageState: pageState, isFirst: false)
+        }
+        
+        VStack{
             
-            VStack(alignment: .leading, spacing: 0){
+            VStack (alignment: .leading){
                 Text("Visita patrimonios")
-                    .font(.system(size: 34))
-                    .fontWeight(.bold)
+                    .font(.custom(.poppinsBold, style: .largeTitle))
                 
                 Text("únicos")
-                    .font(.system(size: 34))
-                    .fontWeight(.bold)
+                    .font(.custom(.poppinsBold, style: .largeTitle))
                     .foregroundStyle(.rosaMex)
+                    .padding(.top, -36)
                 
-                HStack{
-                    Text("Conoce por estado y explora su patrimonio, naturaleza y comunidad.")
-                        .font(.system(size: 16))
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.gray)
-                    Spacer()
-                }
-                .frame(width:362, height: 50)
+                Text("Conoce por estado y explora su \npatrimonio, naturaleza y comunidad.")
+                    .font(.custom(.raleway, style: .callout))
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.secondary)
+                Spacer()
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
             
             ForEach(estados.prefix(5), id: \.id) { estado in
                 estadoCard(estado: estado)
@@ -270,6 +275,7 @@ struct thirdOnboardingView: View {
             continueButton(pageState: $pageState, isFirst: false)
         }
         .padding()
+        .padding(.top, -4)
     }
 }
 
@@ -277,34 +283,34 @@ struct fourthOnboardingView: View {
     @Query private var estados: [Estado]
     @Binding var pageState: Int
     var body: some View {
+        
         VStack{
             HeaderAppViewOnboarding(pageState: pageState, isFirst: false)
-            
+        }
+        
+        VStack{
             VStack(alignment: .leading, spacing: 0){
-                Text("¿Listo para la")
-                    .font(.system(size: 34))
-                    .fontWeight(.bold)
+                Text("Alístate para \nla ")
+                    .font(.custom(.poppinsBold, style: .largeTitle)) +
                 
                 Text("aventura")
-                    .font(.system(size: 34))
-                    .fontWeight(.bold)
+                    .font(.custom(.poppinsBold, style: .largeTitle))
                     .foregroundStyle(.rosaMex)
-                + Text("?")
-                    .font(.system(size: 34))
-                    .fontWeight(.bold)
+                   
                 
-                HStack{
-                    Text("Comparte tu progreso al explorar las comunidades que México tiene para tí.")
-                        .font(.system(size: 16))
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.gray)
-                    Spacer()
-                }
-                .frame(width:362, height: 50)
+//                + Text("?")
+//                    .font(.custom(.poppinsBold, style: .largeTitle))
+                
+                Text("Comparte tu progreso al explorar las comunidades que México tiene para tí.")
+                    .font(.custom(.raleway, style: .callout))
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.secondary)
+                
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, -4)
             
             Spacer()
-            
             continueButton(pageState: $pageState, isFirst: false)
         }
         .padding()
