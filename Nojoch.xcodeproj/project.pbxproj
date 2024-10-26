@@ -12,7 +12,6 @@
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		7BF4ACDF2CCC8B1F008AE959 /* Exceptions for "Nojoch" folder in "Nojoch" target */ = {
-		57E381D52CCC6697007871D9 /* Exceptions for "Nojoch" folder in "Nojoch" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -26,7 +25,6 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				7BF4ACDF2CCC8B1F008AE959 /* Exceptions for "Nojoch" folder in "Nojoch" target */,
-				57E381D52CCC6697007871D9 /* Exceptions for "Nojoch" folder in "Nojoch" target */,
 			);
 			path = Nojoch;
 			sourceTree = "<group>";
