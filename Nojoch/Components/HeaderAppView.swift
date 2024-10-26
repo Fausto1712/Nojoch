@@ -102,6 +102,50 @@ struct HeaderAppView: View {
     }
 }
 
+struct HeaderAppViewExplore: View {
+    @AppStorage("isOnboardingCompleted") var isOnboardingCompleted: Bool = false
+    
+    @EnvironmentObject var router: Router
+    @Binding var isPresentingmap: Bool
+    
+    var headerTitle: String
+    var body: some View {
+        VStack{
+            HStack{
+                Image("person1")
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                    .clipShape(Circle())
+                    .foregroundStyle(.gray.opacity(0.5))
+                    .onTapGesture {
+                        isOnboardingCompleted = false
+                        router.setPath([.contentView])
+                    }
+                Text(headerTitle)
+                    .foregroundStyle(.rosaMex)
+                    .font(.system(size: 22))
+                    .fontWeight(.bold)
+                
+                Spacer()
+                
+                Image(systemName: isPresentingmap ? "list.bullet" : "map.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .padding(10)
+                    .frame(width: 36, height: 36)
+                    .background(.gray.opacity(0.2))
+                    .clipShape(Circle())
+                    .fontWeight(.bold)
+                    .onTapGesture { isPresentingmap.toggle() }
+            }
+            Divider()
+                .background(Color.gray.opacity(0.5))
+                .padding(.horizontal, -16)
+                .padding(.bottom,0)
+        }
+    }
+}
+
 struct HeaderAppViewComponent: View {
     @EnvironmentObject var router: Router
     var body: some View {
@@ -188,5 +232,8 @@ struct OnboardingNavBarWhite: View {
 #Preview {
     //HeaderAppView(headerTitle: "Herencia Viva")
     //HeaderAppViewComponent()
+    HeaderAppView(headerTitle: "Herencia Viva")
+    HeaderAppViewExplore(isPresentingmap: .constant(true), headerTitle: "Explora")
+    HeaderAppViewComponent()
     HeaderAppViewOnboarding(pageState: 0, isFirst: true)
 }

@@ -7,19 +7,128 @@
 
 import SwiftUI
 import SwiftData
+import MapKit
+import CoreLocation
 
 struct exploreView: View {
-    @EnvironmentObject var router: Router
     @Environment(\.modelContext) private var modelContext
+    
+    @State private var isPresentingMap: Bool = true
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            if isPresentingMap {
+                mapExploreView(isPresentingMap: $isPresentingMap)
+            } else {
+                searchExploreView(isPresentingMap: $isPresentingMap)
+            }
+        }
+    }
+    
+}
+
+struct mapExploreView:View {
+    @EnvironmentObject var router: Router
+    @EnvironmentObject var locationManager: LocationManager
+    
+    @Binding var isPresentingMap: Bool
+    
+    @State private var selectedTag: Int?
+    @State private var nearbyPatrimonio: Patrimonio? = nil
+    @State private var filteredPatrimonios: [Patrimonio : Bool] = [:]
+    @State private var isFollowingUser: Bool = true
+    
+    @Query private var patrimonios: [Patrimonio]
+    
+    var body: some View {
+        ZStack {
+            Map(position: $locationManager.camera, selection: $selectedTag) {
+                ForEach(filteredPatrimonios.keys.sorted(by: { $0.titulo < $1.titulo }), id: \.self) { patrimonio in
+                    Marker(patrimonio.titulo, coordinate: CLLocationCoordinate2D(latitude: patrimonio.coordinates[0], longitude: patrimonio.coordinates[1]))
+                        .tint(filteredPatrimonios[patrimonio] == true ? .rosaMex : .blue)
+                        .tag(patrimonio.id)
+                }
+                UserAnnotation()
+            }
+            .mapStyle(.standard)
+            .mapControls {
+                MapScaleView()
+            }
+            
+            if nearbyPatrimonio != nil {
+                VStack {
+                    Spacer()
+                    Button(action: {
+                        print(nearbyPatrimonio?.titulo ?? "")
+                    }) {
+                        HStack{
+                            Image(systemName: "camera.fill")
+                            
+                            Text(" Abrir Cámara")
+                        }
+                        .font(.headline)
+                        .padding()
+                        .background(.rosaMex)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                    }
+                    Spacer().frame(height: 50)
+                }
+            }
+            
+            VStack {
+                HeaderAppViewExplore(isPresentingmap: $isPresentingMap, headerTitle: "Explora")
+                    .padding(.horizontal, 20)
+                    .background(.white)
+                Spacer()
+            }
+        }
+        .onAppear{
+            mapPatrimonios()
+        }
+        .onChange(of: selectedTag) {
+            if selectedTag != nil {
+                router.navigate(to: .patrimonio(patrimonio: patrimonios.first(where: { $0.id == selectedTag })!))
+            }
+        }
+    }
+    
+    func mapPatrimonios() {
+        guard let userLocation = locationManager.location else { return }
+        
+        var minDistance = 10000.00
+        nearbyPatrimonio = nil
+        filteredPatrimonios.removeAll()
+        
+        for patrimonio in patrimonios {
+            let patrimonioLocation = CLLocation(latitude: patrimonio.coordinates[0], longitude: patrimonio.coordinates[1])
+            let distance = userLocation.distance(from: patrimonioLocation)
+            
+            if distance <= minDistance {
+                minDistance = distance
+                nearbyPatrimonio = patrimonio
+                filteredPatrimonios[patrimonio] = true
+            } else {
+                filteredPatrimonios[patrimonio] = false
+            }
+        }
+    }
+}
+
+struct searchExploreView:View {
+    @EnvironmentObject var router: Router
+    
     @Query private var estados: [Estado]
     @Query private var comunidades: [Comunidad]
     
     @State private var selectedCategory: String = "Estado"
     @State private var searchText: String = ""
     
+    @Binding var isPresentingMap: Bool
+    
     var body: some View {
-        VStack(alignment: .leading){
-            HeaderAppView(headerTitle: "Explora")
+        VStack{
+            HeaderAppViewExplore(isPresentingmap: $isPresentingMap, headerTitle: "Explora")
                 .padding(.horizontal, 20)
             
             HStack{

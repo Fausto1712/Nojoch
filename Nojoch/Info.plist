@@ -8,5 +8,7 @@
 		<string>Poppins-SemiBold.ttf</string>
 		<string>Raleway.ttf</string>
 	</array>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
 </dict>
 </plist>

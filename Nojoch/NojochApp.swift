@@ -11,6 +11,7 @@ import SwiftData
 @main
 struct NojochApp: App {
     @ObservedObject var router = Router()
+    @ObservedObject var locationManager = LocationManager()
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -58,6 +59,7 @@ struct NojochApp: App {
                     }
             }
         }
+        .environmentObject(locationManager)
         .environmentObject(router)
         .modelContainer(sharedModelContainer)
     }
