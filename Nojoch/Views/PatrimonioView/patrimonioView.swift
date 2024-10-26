@@ -12,10 +12,7 @@ import MapKit
 struct patrimonioView: View {
     @State var patrimonio: Patrimonio
     @State private var selectedTag : Int?
-    @State var camera : MapCameraPosition = .region(MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 40.8525139681341,longitude: 14.272090640839773),
-        latitudinalMeters: 5000,
-        longitudinalMeters: 15000))
+    @State var camera : MapCameraPosition = .region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 40.8525139681341,longitude: 14.272090640839773), latitudinalMeters: 5000, longitudinalMeters: 15000))
     
     @Query(filter: #Predicate<Estado> { estado in estado.nombre == "Nuevo León" }) var estado: [Estado]
     
