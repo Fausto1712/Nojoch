@@ -28,6 +28,11 @@ struct ContentView: View {
                     .tabItem {
                         Label("Herencia", systemImage: "medal")
                     }
+                
+                BadgesView()
+                    .tabItem {
+                        Label("Badges", systemImage: "trophy")
+                    }
 
             }
             .navigationBarBackButtonHidden(true)
