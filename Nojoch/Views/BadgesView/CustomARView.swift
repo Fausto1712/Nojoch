@@ -27,6 +27,7 @@ class CustomARView: ARView {
         configure()
         
         subscribeToActionStream()
+        
     }
     
     func configure() {
@@ -35,6 +36,7 @@ class CustomARView: ARView {
         session.run(configuration)
         addCoachingIfNeeded()
         addCoaching()
+        loadObj("A")
     }
     
     func createAnchor() {
