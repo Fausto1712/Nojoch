@@ -36,6 +36,7 @@ struct mapExploreView:View {
     @State private var selectedTag: Int?
     @State private var nearbyPatrimonio: Patrimonio? = nil
     @State private var filteredPatrimonios: [Patrimonio : Bool] = [:]
+    @State private var visitedPatrimonios: [Patrimonio] = []
     @State private var isFollowingUser: Bool = true
     
     @Query private var patrimonios: [Patrimonio]
@@ -65,7 +66,11 @@ struct mapExploreView:View {
                         HStack{
                             Image(systemName: "camera.fill")
                             
-                            Text(" Abrir Cámara")
+                            NavigationLink {
+                                ARInsigniasView(patrimonio: nearbyPatrimonio?.titulo ?? "Cerro de la silla")
+                            } label: {
+                                Text(" Abrir Cámara")
+                            }
                         }
                         .font(.headline)
                         .padding()
@@ -101,10 +106,15 @@ struct mapExploreView:View {
         var minDistance = 10000.00
         nearbyPatrimonio = nil
         filteredPatrimonios.removeAll()
+        visitedPatrimonios.removeAll()
         
         for patrimonio in patrimonios {
             let patrimonioLocation = CLLocation(latitude: patrimonio.coordinates[0], longitude: patrimonio.coordinates[1])
             let distance = userLocation.distance(from: patrimonioLocation)
+            
+            if patrimonio.visited {
+                visitedPatrimonios.append(patrimonio)
+            }
             
             if distance <= minDistance {
                 minDistance = distance

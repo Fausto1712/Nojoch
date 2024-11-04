@@ -25,23 +25,15 @@ class CustomARView: ARView {
     convenience init() {
         self.init(frame: UIScreen.main.bounds)
         configure()
-        
         subscribeToActionStream()
-        
     }
     
     func configure() {
         let configuration = ARWorldTrackingConfiguration()
-        configuration.planeDetection = [.vertical]
+        configuration.planeDetection = [.horizontal]
         session.run(configuration)
         addCoachingIfNeeded()
         addCoaching()
-    }
-    
-    func createAnchor() {
-        let anchor = AnchorEntity(world: .zero)
-        scene.addAnchor(anchor)
-        
     }
     
     private var cancellables: Set<AnyCancellable> = []
@@ -57,10 +49,20 @@ class CustomARView: ARView {
                 case .removeAllAnchors:
                     self?.scene.anchors.removeAll()
                 }
+                
+                
             }
             .store(in: &cancellables)
     }
     
+//    func loadAll() {
+//        guard let cameraTransform = self.session.currentFrame?.camera.transform else {
+//            print("Camera transform not available.")
+//            return
+//        }
+//        
+//        
+//    }
     
     func loadObj(_ object: String) {
         guard let cameraTransform = self.session.currentFrame?.camera.transform else {

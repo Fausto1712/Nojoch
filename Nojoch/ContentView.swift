@@ -32,11 +32,6 @@ struct ContentView: View {
                             Label("Herencia", systemImage: "medal")
                         }
                     
-                    ARInsigniasView(patrimonio: "Cerro de la silla")
-                        .tabItem {
-                            Label("Explora", systemImage: "camera")
-                        }
-                    
                 }
                 .navigationBarBackButtonHidden(true)
             } else {
