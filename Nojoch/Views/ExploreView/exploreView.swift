@@ -59,6 +59,7 @@ struct mapExploreView:View {
                 VStack {
                     Spacer()
                     Button(action: {
+                        
                         print(nearbyPatrimonio?.titulo ?? "")
                     }) {
                         HStack{
