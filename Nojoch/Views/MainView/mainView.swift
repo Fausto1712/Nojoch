@@ -24,37 +24,55 @@ struct mainView: View {
     
     var body: some View {
         VStack(alignment: .leading){
+            
             HeaderAppView(headerTitle: "Herencia Viva")
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 32)
             
             ScrollView{
                 HStack{
                     Text("Patrimonios")
-                        .foregroundStyle(.rosaMex)
-                        .font(.system(size: 17))
-                        .fontWeight(.semibold) +
+                        .foregroundStyle(.rosaMex) +
                     Text(" de hoy")
-                        .font(.system(size: 17))
                     Spacer()
                 }
-                .padding(.horizontal, 20)
-                .padding(.top,10)
+                .font(.custom(.poppinsSemiBold, style: .headline))
+                .padding(.top, 14)
+                .padding(.bottom, 10)
+                .padding([.horizontal])
                 
-                patrimonioCard(patrimonio: Patrimonio(id: 0, tags: ["Rural", "Descubre", "Patrimonio", "Hike", "Aventura", "Agua"], persona: "La Cumbre Cotidiana", personaFoto: "person5", estado: "Nuevo León", comunidad: "Puerto Genovevo", titulo: "Cañon Matacanes", descripcion: "Embarcate en una aventura extrema en uno de los cañones mas famosos de Mexico, con saltos de mas 12 metros, toboganes de agua, espeologia y mucho mas", coordinates: [25.371573866134465, -100.15547982938328], ubicacion: "Cola de caballo", fotos: ["matacanes1", "matacanes2", "matacanes3"], idioma: "Náhuatl", favorited: false, visited: true, estrella: 5))
+                patrimonioCard(patrimonio: Patrimonio(id: 0, tags: ["Rural", "Descubre", "Patrimonio", "Hike", "Aventura", "Agua"], persona: "La Cumbre Cotidiana", personaFoto: "person5", estado: "Nuevo León", comunidad: "Puerto Genovevo", titulo: "Cañon Matacanes", descripcion: "Embarcate en una aventura extrema en uno de los cañones mas famosos de Mexico, con saltos de mas 12 metros, toboganes de agua, espeologia y mucho más.", coordinates: [25.371573866134465, -100.15547982938328], ubicacion: "Cola de caballo", fotos: ["matacanes1", "matacanes2", "matacanes3"], idioma: "Náhuatl", favorited: false, visited: true, estrella: 5))
+                    .padding(.horizontal)
+                
+                Rectangle()
+                    .foregroundStyle(.quinary)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 4)
+                    .padding(.vertical, 12)
                 
                 ForEach(patrimonios, id: \.id) { patrimonio in
                     patrimonioCard(patrimonio: patrimonio)
-                        .padding(.bottom)
+                        .padding(.horizontal)
                         .onTapGesture {
                             router.navigate(to: .patrimonio(patrimonio: patrimonio))
                         }
+                    
+                    Rectangle()
+                        .foregroundStyle(.quinary)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 4)
+                        .padding(.vertical, 12)
                 }
             }
+            .padding(.horizontal)
             .scrollIndicators(.hidden)
+            .frame(maxWidth: .infinity)
+            .ignoresSafeArea(edges: .horizontal)
+            .padding(.top, -8)
         }
+        .padding(.horizontal, -16)
         .onAppear{
             if patrimonios.isEmpty {
-                modelContext.insert(Patrimonio(id: 0, tags: ["Rural", "Descubre", "Patrimonio", "Hike", "Aventura", "Agua"], persona: "La Cumbre Cotidiana", personaFoto: "person5", estado: "Nuevo León", comunidad: "Puerto Genovevo", titulo: "Cañon Matacanes", descripcion: "Embarcate en una aventura extrema en uno de los cañones mas famosos de Mexico, con saltos de mas 12 metros, toboganes de agua, espeologia y mucho mas", coordinates: [25.371573866134465, -100.15547982938328], ubicacion: "Cola de caballo", fotos: ["matacanes1", "matacanes2", "matacanes3"], idioma: "Náhuatl", favorited: false, visited: true, estrella: 5))
+                modelContext.insert(Patrimonio(id: 0, tags: ["Rural", "Descubre", "Patrimonio", "Hike", "Aventura", "Agua"], persona: "La Cumbre Cotidiana", personaFoto: "person5", estado: "Nuevo León", comunidad: "Puerto Genovevo", titulo: "Cañon Matacanes", descripcion: "Embarcate en una aventura extrema en uno de los cañones mas famosos de Mexico, con saltos de mas 12 metros, toboganes de agua, espeologia y mucho más.", coordinates: [25.371573866134465, -100.15547982938328], ubicacion: "Cola de caballo", fotos: ["matacanes1", "matacanes2", "matacanes3"], idioma: "Náhuatl", favorited: false, visited: true, estrella: 5))
                 
                 modelContext.insert(Patrimonio(id: 1, tags: ["Patrimonio", "Descubre", "Hike", "Cultura", "Montaña"], persona: "Explorador de Raíces", personaFoto: "person2", estado: "Nuevo León", comunidad: "El Salto", titulo: "Cerro de la Silla", descripcion: "Sube al icónico cerro que vigila la ciudad de Monterrey y conecta con la historia y cultura local, mientras disfrutas de vistas impresionantes.", coordinates: [25.612250, -100.278030], ubicacion: "El Salto, Nuevo León", fotos: ["cerro1", "cerro2", "cerro3"], idioma: "Náhuatl", favorited: false, visited: true, estrella: 4))
                 
@@ -158,14 +176,15 @@ struct patrimonioCard: View {
                 .padding(.leading, 4)
                 Spacer()
                 Menu {
-                    Button("Náhualt") { selectedLanguage = "Nahualt"}
-                    Button("Maya") { selectedLanguage = "Maya" }
-                    Button("Español") { selectedLanguage = "Español" }
+                    Button("Náhualt") { withAnimation{ selectedLanguage = "Nahualt" }}
+                    Button("Maya") { withAnimation{ selectedLanguage = "Maya" }}
+                    Button("Español") { withAnimation{ selectedLanguage = "Español" }}
                 } label: {
                     Image(systemName: "globe")
                         .foregroundStyle(.secondary)
                         .fontWeight(.bold)
                         .foregroundColor(.secondary)
+                        .offset(y: -2)
                 }
             }
             
@@ -173,7 +192,7 @@ struct patrimonioCard: View {
                 Text(patrimonio.descripcion)
                     .font(.custom(.raleway, style: .custom14))
                     .fontWeight(.medium)
-                    .padding(.top, 4)
+                    .padding(.top, 2)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             
