@@ -264,7 +264,7 @@ class CustomARView: ARView {
 //            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
 //                self.startRotating(entity: entity)
 //            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     // Animate the second transformation after 1 second
                 self.moveDown(entity: entity)
                 }
@@ -284,6 +284,8 @@ class CustomARView: ARView {
                 currentPosition.z
             )
         
+        
+        
         let backwardRotation = simd_quatf(angle: .pi, axis: SIMD3(x: 0, y: 1, z: 0))
 
             let targetScale = SIMD3<Float>(scaleFactor, scaleFactor, scaleFactor) // Scale down to 30% size
@@ -295,11 +297,25 @@ class CustomARView: ARView {
     
     func moveDown(entity: Entity) {
                 
-        let prevPosition = entity.position
+        let currentPosition = entity.position
+        let targetPosition = SIMD3<Float>(
+            currentPosition.x,
+            currentPosition.y - 0.1,
+            currentPosition.z
+        )
+//        let currentAngle = entity.transform.rotation.angle
+        
         let rotation = simd_quatf(angle: 2 * .pi, axis: SIMD3(x: 0, y: 1, z: 0))
-        let targetTransform = Transform(scale: SIMD3<Float>(1.0,1.0,1.0), rotation: rotation, translation: prevPosition)
-                
+//        let rotation = entity.orientation
+        let targetTransform = Transform(scale: SIMD3<Float>(1.0,1.0,1.0), rotation: rotation, translation: targetPosition)
+        
         entity.move(to: targetTransform, relativeTo: entity.parent, duration: 2.0)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            let rotation = simd_quatf(angle: 0, axis: SIMD3(x: 0, y: 1, z: 0))
+            let prev = Transform(scale: SIMD3<Float>(1.0,1.0,1.0), rotation: rotation, translation: targetPosition)
+            entity.move(to: prev, relativeTo: entity.parent, duration: 0.1)
+        }
      
     }
     
