@@ -5,6 +5,12 @@
 //  Created by Fausto Pinto Cabrera on 25/09/24.
 //
 
+struct TagTranslations {
+    let original: String
+    let nahualt: String
+    let maya: String
+}
+
 import SwiftUI
 import SwiftData
 
@@ -18,35 +24,55 @@ struct mainView: View {
     
     var body: some View {
         VStack(alignment: .leading){
+            
             HeaderAppView(headerTitle: "Herencia Viva")
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 32)
             
             ScrollView{
                 HStack{
                     Text("Patrimonios")
-                        .foregroundStyle(.rosaMex)
-                        .font(.system(size: 17))
-                        .fontWeight(.semibold) +
+                        .foregroundStyle(.rosaMex) +
                     Text(" de hoy")
-                        .font(.system(size: 17))
                     Spacer()
                 }
-                .padding(.horizontal, 20)
-                .padding(.top,10)
+                .font(.custom(.poppinsSemiBold, style: .headline))
+                .padding(.top, 14)
+                .padding(.bottom, 10)
+                .padding([.horizontal])
+                
+                patrimonioCard(patrimonio: Patrimonio(id: 0, tags: ["Rural", "Descubre", "Patrimonio", "Hike", "Aventura", "Agua"], persona: "La Cumbre Cotidiana", personaFoto: "person5", estado: "Nuevo León", comunidad: "Puerto Genovevo", titulo: "Cañon Matacanes", descripcion: "Embarcate en una aventura extrema en uno de los cañones mas famosos de Mexico, con saltos de mas 12 metros, toboganes de agua, espeologia y mucho más.", coordinates: [25.371573866134465, -100.15547982938328], ubicacion: "Cola de caballo", fotos: ["matacanes1", "matacanes2", "matacanes3"], idioma: "Náhuatl", favorited: false, visited: true, estrella: 5))
+                    .padding(.horizontal)
+                
+                Rectangle()
+                    .foregroundStyle(.quinary)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 4)
+                    .padding(.vertical, 12)
                 
                 ForEach(patrimonios, id: \.id) { patrimonio in
                     patrimonioCard(patrimonio: patrimonio)
-                        .padding(.bottom)
+                        .padding(.horizontal)
                         .onTapGesture {
                             router.navigate(to: .patrimonio(patrimonio: patrimonio))
                         }
+                    
+                    Rectangle()
+                        .foregroundStyle(.quinary)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 4)
+                        .padding(.vertical, 12)
                 }
             }
+            .padding(.horizontal)
             .scrollIndicators(.hidden)
+            .frame(maxWidth: .infinity)
+            .ignoresSafeArea(edges: .horizontal)
+            .padding(.top, -8)
         }
+        .padding(.horizontal, -16)
         .onAppear{
             if patrimonios.isEmpty {
-                modelContext.insert(Patrimonio(id: 0, tags: ["Rural", "Descubre", "Patrimonio", "Hike", "Aventura", "Agua"], persona: "La Cumbre Cotidiana", personaFoto: "person5", estado: "Nuevo León", comunidad: "Puerto Genovevo", titulo: "Cañon Matacanes", descripcion: "Embarcate en una aventura extrema en uno de los cañones mas famosos de Mexico, con saltos de mas 12 metros, toboganes de agua, espeologia y mucho mas", coordinates: [25.371573866134465, -100.15547982938328], ubicacion: "Cola de caballo", fotos: ["matacanes1", "matacanes2", "matacanes3"], idioma: "Náhuatl", favorited: false, visited: true, estrella: 5))
+                modelContext.insert(Patrimonio(id: 0, tags: ["Rural", "Descubre", "Patrimonio", "Hike", "Aventura", "Agua"], persona: "La Cumbre Cotidiana", personaFoto: "person5", estado: "Nuevo León", comunidad: "Puerto Genovevo", titulo: "Cañon Matacanes", descripcion: "Embarcate en una aventura extrema en uno de los cañones mas famosos de Mexico, con saltos de mas 12 metros, toboganes de agua, espeologia y mucho más.", coordinates: [25.371573866134465, -100.15547982938328], ubicacion: "Cola de caballo", fotos: ["matacanes1", "matacanes2", "matacanes3"], idioma: "Náhuatl", favorited: false, visited: true, estrella: 5))
                 
                 modelContext.insert(Patrimonio(id: 1, tags: ["Patrimonio", "Descubre", "Hike", "Cultura", "Montaña"], persona: "Explorador de Raíces", personaFoto: "person2", estado: "Nuevo León", comunidad: "El Salto", titulo: "Cerro de la Silla", descripcion: "Sube al icónico cerro que vigila la ciudad de Monterrey y conecta con la historia y cultura local, mientras disfrutas de vistas impresionantes.", coordinates: [25.612250, -100.278030], ubicacion: "El Salto, Nuevo León", fotos: ["cerro1", "cerro2", "cerro3"], idioma: "Náhuatl", favorited: false, visited: true, estrella: 4))
                 
@@ -117,21 +143,26 @@ struct mainView: View {
 }
 
 struct patrimonioCard: View {
+    @StateObject private var transNahualtModel = TranslationNahualtModel()
+    @StateObject private var transMayaModel = TranslationMayaModel()
+    @State private var tagTranslations: [TagTranslations] = []
+    @State private var selectedLanguage: String = "Español"
+    
     var patrimonio: Patrimonio
+    
     var body: some View {
-        VStack{
-            // PERSONA, LUGAR Y MENU DE ELIPSIS
-            HStack{
+        VStack {
+            HStack {
                 Image(patrimonio.personaFoto)
                     .resizable()
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())
-                VStack(alignment: .leading){
+                VStack(alignment: .leading) {
                     Text(patrimonio.persona)
                         .font(.custom(.raleway, style: .subheadline))
                         .fontWeight(.semibold)
                     
-                    HStack{
+                    HStack {
                         Text("\(patrimonio.comunidad), ")
                             .font(.custom(.raleway, style: .footnote))
                             .fontWeight(.semibold)
@@ -144,21 +175,27 @@ struct patrimonioCard: View {
                 }
                 .padding(.leading, 4)
                 Spacer()
-                Image(systemName: "ellipsis")
-                    .foregroundStyle(.secondary)
-                    .fontWeight(.bold)
+                Menu {
+                    Button("Náhualt") { withAnimation{ selectedLanguage = "Nahualt" }}
+                    Button("Maya") { withAnimation{ selectedLanguage = "Maya" }}
+                    Button("Español") { withAnimation{ selectedLanguage = "Español" }}
+                } label: {
+                    Image(systemName: "globe")
+                        .foregroundStyle(.secondary)
+                        .fontWeight(.bold)
+                        .foregroundColor(.secondary)
+                        .offset(y: -2)
+                }
             }
             
-            // DESCRIPCIÓN DEL PATRIMONIO
-            if patrimonio.descripcion != ""{
+            if patrimonio.descripcion != "" {
                 Text(patrimonio.descripcion)
                     .font(.custom(.raleway, style: .custom14))
                     .fontWeight(.medium)
-                    .padding(.top, 4)
+                    .padding(.top, 2)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             
-            // CONTENEDOR DE IMAGENES
             TabView {
                 ForEach(patrimonio.fotos, id: \.self) { foto in
                     Image(foto)
@@ -170,22 +207,21 @@ struct patrimonioCard: View {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .tabViewStyle(PageTabViewStyle())
             
-            // SCROLLABLE TAGS
-            ScrollView(.horizontal){
-                HStack{
-                    ForEach(patrimonio.tags, id: \.self) { tag in
-                        HStack(spacing: 8){
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(tagTranslations, id: \.original) { tagTranslation in
+                        HStack(spacing: 8) {
                             Circle()
                                 .frame(width: 10, height: 10)
                                 .foregroundStyle(.white)
-                            Text(tag)
+                            Text(getTag(for: tagTranslation))
                                 .foregroundStyle(.white)
                                 .font(.custom(.raleway, style: .footnote))
                                 .fontWeight(.semibold)
                         }
                         .padding(.vertical, 8)
                         .padding(.horizontal, 12)
-                        .background(Color.tagColors[tag] ?? .rosaMex)
+                        .background(Color.tagColors[tagTranslation.original] ?? .rosaMex)
                         .clipShape(RoundedRectangle(cornerRadius: 6))
                     }
                 }
@@ -193,8 +229,7 @@ struct patrimonioCard: View {
             .scrollIndicators(.hidden)
             .padding([.top, .bottom], 4)
             
-            // FECHA
-            HStack{
+            HStack {
                 Text(patrimonio.fecha.toSpanishFormattedString())
                     .font(.custom(.raleway, style: .caption))
                     .fontWeight(.regular)
@@ -203,9 +238,33 @@ struct patrimonioCard: View {
             }
             .padding(.top, 4)
         }
+        .onAppear {
+            setupTagTranslations()
+        }
+    }
+    
+    func getTag(for tagTranslation: TagTranslations) -> String {
+        switch selectedLanguage {
+        case "Nahualt":
+            return tagTranslation.nahualt
+        case "Maya":
+            return tagTranslation.maya
+        default:
+            return tagTranslation.original
+        }
+    }
+    
+    func setupTagTranslations() {
+        tagTranslations = patrimonio.tags.map { tag in
+            TagTranslations(
+                original: tag,
+                nahualt: transNahualtModel.translate(tag.lowercased()).capitalized,
+                maya: transMayaModel.translate(tag).capitalized
+            )
+        }
     }
 }
 
 #Preview {
-    //mainView()
+    mainView()
 }
