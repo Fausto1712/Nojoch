@@ -26,8 +26,9 @@ final class Patrimonio : Identifiable {
     var visited: Bool
     var estrella: Int
     var fecha: Date
+    var insignia: String
     
-    init(id: Int, tags: [String], persona: String, personaFoto: String, estado: String, comunidad: String, titulo: String, descripcion: String, coordinates: [Double], ubicacion:String, fotos: [String], idioma: String, favorited: Bool, visited: Bool, estrella: Int) {
+    init(id: Int, tags: [String], persona: String, personaFoto: String, estado: String, comunidad: String, titulo: String, descripcion: String, coordinates: [Double], ubicacion: String, fotos: [String], idioma: String, favorited: Bool, visited: Bool, estrella: Int) {
         self.id = id
         self.tags = tags
         self.persona = persona
@@ -44,6 +45,7 @@ final class Patrimonio : Identifiable {
         self.visited = visited
         self.estrella = estrella
         self.fecha = Date()
+        self.insignia = ""
     }
 }
 
