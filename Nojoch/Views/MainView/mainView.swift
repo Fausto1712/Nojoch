@@ -34,6 +34,8 @@ struct mainView: View {
                 .padding(.horizontal, 20)
                 .padding(.top,10)
                 
+                patrimonioCard(patrimonio: Patrimonio(id: 0, tags: ["Rural", "Descubre", "Patrimonio", "Hike", "Aventura", "Agua"], persona: "La Cumbre Cotidiana", personaFoto: "person5", estado: "Nuevo León", comunidad: "Puerto Genovevo", titulo: "Cañon Matacanes", descripcion: "Embarcate en una aventura extrema en uno de los cañones mas famosos de Mexico, con saltos de mas 12 metros, toboganes de agua, espeologia y mucho mas", coordinates: [25.371573866134465, -100.15547982938328], ubicacion: "Cola de caballo", fotos: ["matacanes1", "matacanes2", "matacanes3"], idioma: "Náhuatl", favorited: false, visited: true, estrella: 5))
+                
                 ForEach(patrimonios, id: \.id) { patrimonio in
                     patrimonioCard(patrimonio: patrimonio)
                         .padding(.bottom)
@@ -117,6 +119,11 @@ struct mainView: View {
 }
 
 struct patrimonioCard: View {
+    @StateObject private var transNahualtModel = TranslationNahualtModel()
+    @StateObject private var transMayaModel = TranslationMayaModel()
+    @State private var translatedTags: [String] = []
+    @State private var showTranslatedTags = false
+    
     var patrimonio: Patrimonio
     var body: some View {
         VStack{
@@ -144,9 +151,16 @@ struct patrimonioCard: View {
                 }
                 .padding(.leading, 4)
                 Spacer()
-                Image(systemName: "ellipsis")
-                    .foregroundStyle(.secondary)
-                    .fontWeight(.bold)
+                Menu{
+                    Button("Náhualt", action: translateNahualtTags)
+                    Button("Maya", action: translateMayaTags)
+                    Button("Español", action: {showTranslatedTags = false})
+                } label:{
+                    Image(systemName: "globe")
+                        .foregroundStyle(.secondary)
+                        .fontWeight(.bold)
+                        .foregroundColor(.secondary)
+                }
             }
             
             // DESCRIPCIÓN DEL PATRIMONIO
@@ -173,7 +187,7 @@ struct patrimonioCard: View {
             // SCROLLABLE TAGS
             ScrollView(.horizontal){
                 HStack{
-                    ForEach(patrimonio.tags, id: \.self) { tag in
+                    ForEach(showTranslatedTags ? translatedTags : patrimonio.tags, id: \.self) { tag in
                         HStack(spacing: 8){
                             Circle()
                                 .frame(width: 10, height: 10)
@@ -204,8 +218,22 @@ struct patrimonioCard: View {
             .padding(.top, 4)
         }
     }
+    
+    func translateNahualtTags() {
+        translatedTags = patrimonio.tags.map { tag in
+            transNahualtModel.translate(tag.lowercased()).capitalized
+        }
+        showTranslatedTags = true
+    }
+    
+    func translateMayaTags() {
+        translatedTags = patrimonio.tags.map { tag in
+            transMayaModel.translate(tag).capitalized
+        }
+        showTranslatedTags = true
+    }
 }
 
 #Preview {
-    //mainView()
+    mainView()
 }
