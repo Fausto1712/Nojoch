@@ -16,6 +16,7 @@ import Combine
 class CustomARView: ARView {
     private var initialZPosition: Float?
     public var selected = ""
+    private var mainEntity: ModelEntity?
     var viewModel: ARViewModel?
     
     
@@ -89,7 +90,9 @@ class CustomARView: ARView {
 //            print("Camera transform not available.")
 //            return
 //        }
-        self.scene.anchors.removeAll()
+//        self.scene.anchors.removeAll()
+        
+        animateToTopRight()
 //        addHorizontalCoaching()
         
         let spacing: Float = 0.15 // Adjust this value to control spacing between objects
@@ -170,6 +173,7 @@ class CustomARView: ARView {
             wrapperEntity.name = object
 //            boxEntity.generateCollisionShapes(recursive: true)
             installGestures(on: wrapperEntity)
+            self.mainEntity = wrapperEntity
             anchor.addChild(wrapperEntity)
             scene.addAnchor(anchor)
             print("tap")
@@ -202,14 +206,32 @@ class CustomARView: ARView {
         wrapperEntity.addChild(entity)
         
         // Enable collision shapes and install gestures on the wrapper
-        wrapperEntity.generateCollisionShapes(recursive: true)
+        wrapperEntity.generateCollisionShapes(recursive: false)
 //        installGestures(on: wrapperEntity)
         
         return wrapperEntity
         }
     
+    func animateToTopRight() {
+        
+        guard let entity = self.mainEntity else { return }
+        let scaleFactor: Float = 0.3
+        let targetPosition = SIMD3<Float>(0.1, 0.5, -0.3) // Adjust based on AR scene
+//        let targetPosition = SIMD3<Float>(0.15, 0.15, -0.5)
+        let targetScale = SIMD3<Float>(scaleFactor, scaleFactor, scaleFactor)     // Scale down to 10% size
+
+                // Create a Transform with the target position and scale
+                let targetTransform = Transform(scale: targetScale, rotation: entity.orientation, translation: targetPosition)
+
+                // Animate both the position and scale using move(to:duration:)
+                entity.move(to: targetTransform, relativeTo: entity.parent, duration: 1.0)
+        
+        }
+    
+
+    
     func installGestures(on object: ModelEntity) {
-        object.generateCollisionShapes(recursive: true)
+        object.generateCollisionShapes(recursive: false)
         
         // Built-in gestures: rotate, scale, and translation
         self.installGestures([.rotation, .scale, .translation], for: object)
@@ -236,30 +258,70 @@ class CustomARView: ARView {
             
             selected = entity.name
             viewModel?.setSelection(entity.name)
-            startRotating(entity: entity)
+            
+            
+            moveUp(entity: entity)
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+//                self.startRotating(entity: entity)
+//            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    // Animate the second transformation after 1 second
+                self.moveDown(entity: entity)
+                }
+            
         }
     }
     
-    @objc func handleTapAll(_ gesture: UITapGestureRecognizer, _ selection: String) {
-        selected = selection
-        let location = gesture.location(in: self)
+    func moveUp(entity: Entity) {
+        let scaleFactor: Float = 1.3
+
+            let currentPosition = entity.position
+
+            let upwardOffset: Float = 0.1
+            let targetPosition = SIMD3<Float>(
+                currentPosition.x,
+                currentPosition.y + upwardOffset,
+                currentPosition.z
+            )
         
-        if let entity = self.entity(at: location) {
-            print("Tapped on entity: \(entity)")
-            startRotating(entity: entity)
-        }
+        let backwardRotation = simd_quatf(angle: .pi, axis: SIMD3(x: 0, y: 1, z: 0))
+
+            let targetScale = SIMD3<Float>(scaleFactor, scaleFactor, scaleFactor) // Scale down to 30% size
+        let targetTransform = Transform(scale: targetScale, rotation: backwardRotation, translation: targetPosition)
+
+            entity.move(to: targetTransform, relativeTo: entity.parent, duration: 2.0)
+
     }
+    
+    func moveDown(entity: Entity) {
+                
+        let prevPosition = entity.position
+        let rotation = simd_quatf(angle: 2 * .pi, axis: SIMD3(x: 0, y: 1, z: 0))
+        let targetTransform = Transform(scale: SIMD3<Float>(1.0,1.0,1.0), rotation: rotation, translation: prevPosition)
+                
+        entity.move(to: targetTransform, relativeTo: entity.parent, duration: 2.0)
+     
+    }
+    
+
     
     private func startRotating(entity: Entity) {
         let rotation = Transform(
             rotation: simd_quatf(angle: .pi, axis: SIMD3(x: 0, y: 1, z: 0))
         )
+
+        entity.move(to: rotation, relativeTo: entity, duration: 1.5, timingFunction: .linear)
         
-        entity.move(to: rotation, relativeTo: entity, duration: 2.0, timingFunction: .linear)
+        let rotationBack = Transform(
+            rotation: simd_quatf(angle: 2 * .pi, axis: SIMD3(x: 0, y: 1, z: 0))
+        )
         
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
-            entity.move(to: rotation, relativeTo: entity, duration: 1.0, timingFunction: .linear)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            
+            
+            entity.move(to: rotationBack, relativeTo: entity, duration: 1.5, timingFunction: .linear)
         }
+
     }
     
    
