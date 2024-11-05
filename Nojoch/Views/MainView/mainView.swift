@@ -5,6 +5,12 @@
 //  Created by Fausto Pinto Cabrera on 25/09/24.
 //
 
+struct TagTranslations {
+    let original: String
+    let nahualt: String
+    let maya: String
+}
+
 import SwiftUI
 import SwiftData
 
@@ -121,24 +127,24 @@ struct mainView: View {
 struct patrimonioCard: View {
     @StateObject private var transNahualtModel = TranslationNahualtModel()
     @StateObject private var transMayaModel = TranslationMayaModel()
-    @State private var translatedTags: [String] = []
-    @State private var showTranslatedTags = false
+    @State private var tagTranslations: [TagTranslations] = []
+    @State private var selectedLanguage: String = "Español"
     
     var patrimonio: Patrimonio
+    
     var body: some View {
-        VStack{
-            // PERSONA, LUGAR Y MENU DE ELIPSIS
-            HStack{
+        VStack {
+            HStack {
                 Image(patrimonio.personaFoto)
                     .resizable()
                     .frame(width: 40, height: 40)
                     .clipShape(Circle())
-                VStack(alignment: .leading){
+                VStack(alignment: .leading) {
                     Text(patrimonio.persona)
                         .font(.custom(.raleway, style: .subheadline))
                         .fontWeight(.semibold)
                     
-                    HStack{
+                    HStack {
                         Text("\(patrimonio.comunidad), ")
                             .font(.custom(.raleway, style: .footnote))
                             .fontWeight(.semibold)
@@ -151,11 +157,11 @@ struct patrimonioCard: View {
                 }
                 .padding(.leading, 4)
                 Spacer()
-                Menu{
-                    Button("Náhualt", action: translateNahualtTags)
-                    Button("Maya", action: translateMayaTags)
-                    Button("Español", action: {showTranslatedTags = false})
-                } label:{
+                Menu {
+                    Button("Náhualt") { selectedLanguage = "Nahualt"}
+                    Button("Maya") { selectedLanguage = "Maya" }
+                    Button("Español") { selectedLanguage = "Español" }
+                } label: {
                     Image(systemName: "globe")
                         .foregroundStyle(.secondary)
                         .fontWeight(.bold)
@@ -163,8 +169,7 @@ struct patrimonioCard: View {
                 }
             }
             
-            // DESCRIPCIÓN DEL PATRIMONIO
-            if patrimonio.descripcion != ""{
+            if patrimonio.descripcion != "" {
                 Text(patrimonio.descripcion)
                     .font(.custom(.raleway, style: .custom14))
                     .fontWeight(.medium)
@@ -172,7 +177,6 @@ struct patrimonioCard: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             
-            // CONTENEDOR DE IMAGENES
             TabView {
                 ForEach(patrimonio.fotos, id: \.self) { foto in
                     Image(foto)
@@ -184,22 +188,21 @@ struct patrimonioCard: View {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .tabViewStyle(PageTabViewStyle())
             
-            // SCROLLABLE TAGS
-            ScrollView(.horizontal){
-                HStack{
-                    ForEach(showTranslatedTags ? translatedTags : patrimonio.tags, id: \.self) { tag in
-                        HStack(spacing: 8){
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach(tagTranslations, id: \.original) { tagTranslation in
+                        HStack(spacing: 8) {
                             Circle()
                                 .frame(width: 10, height: 10)
                                 .foregroundStyle(.white)
-                            Text(tag)
+                            Text(getTag(for: tagTranslation))
                                 .foregroundStyle(.white)
                                 .font(.custom(.raleway, style: .footnote))
                                 .fontWeight(.semibold)
                         }
                         .padding(.vertical, 8)
                         .padding(.horizontal, 12)
-                        .background(Color.tagColors[tag] ?? .rosaMex)
+                        .background(Color.tagColors[tagTranslation.original] ?? .rosaMex)
                         .clipShape(RoundedRectangle(cornerRadius: 6))
                     }
                 }
@@ -207,8 +210,7 @@ struct patrimonioCard: View {
             .scrollIndicators(.hidden)
             .padding([.top, .bottom], 4)
             
-            // FECHA
-            HStack{
+            HStack {
                 Text(patrimonio.fecha.toSpanishFormattedString())
                     .font(.custom(.raleway, style: .caption))
                     .fontWeight(.regular)
@@ -217,20 +219,30 @@ struct patrimonioCard: View {
             }
             .padding(.top, 4)
         }
+        .onAppear {
+            setupTagTranslations()
+        }
     }
     
-    func translateNahualtTags() {
-        translatedTags = patrimonio.tags.map { tag in
-            transNahualtModel.translate(tag.lowercased()).capitalized
+    func getTag(for tagTranslation: TagTranslations) -> String {
+        switch selectedLanguage {
+        case "Nahualt":
+            return tagTranslation.nahualt
+        case "Maya":
+            return tagTranslation.maya
+        default:
+            return tagTranslation.original
         }
-        showTranslatedTags = true
     }
     
-    func translateMayaTags() {
-        translatedTags = patrimonio.tags.map { tag in
-            transMayaModel.translate(tag).capitalized
+    func setupTagTranslations() {
+        tagTranslations = patrimonio.tags.map { tag in
+            TagTranslations(
+                original: tag,
+                nahualt: transNahualtModel.translate(tag.lowercased()).capitalized,
+                maya: transMayaModel.translate(tag).capitalized
+            )
         }
-        showTranslatedTags = true
     }
 }
 
