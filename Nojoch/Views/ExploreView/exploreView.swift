@@ -66,8 +66,9 @@ struct mapExploreView:View {
                         HStack{
                             Image(systemName: "camera.fill")
                             
+                            
                             NavigationLink {
-                                ARInsigniasView(patrimonio: nearbyPatrimonio?.titulo ?? "Cerro de la silla")
+                                ARInsigniasView(patrimonio: nearbyPatrimonio!, visitedPatrimonios: visitedPatrimonios)
                             } label: {
                                 Text(" Abrir Cámara")
                             }

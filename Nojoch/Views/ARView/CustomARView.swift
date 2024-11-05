@@ -51,18 +51,30 @@ class CustomARView: ARView {
                 }
                 
                 
+                
+                
             }
             .store(in: &cancellables)
     }
     
-//    func loadAll() {
-//        guard let cameraTransform = self.session.currentFrame?.camera.transform else {
-//            print("Camera transform not available.")
-//            return
-//        }
-//        
-//        
-//    }
+    func loadAll(_ objects: [String]) {
+        guard let cameraTransform = self.session.currentFrame?.camera.transform else {
+            print("Camera transform not available.")
+            return
+        }
+        
+        for object in objects {
+            let insignia = try? (Entity.load(named: object))
+            let anchor = AnchorEntity(.plane(.vertical, classification: .any, minimumBounds: SIMD2(repeating: 0)))
+            
+            if let insigniaEntity = insignia {
+                anchor.addChild(insigniaEntity)
+                scene.addAnchor(anchor)
+            }
+        }
+        
+        
+    }
     
     func loadObj(_ object: String) {
         guard let cameraTransform = self.session.currentFrame?.camera.transform else {
@@ -119,9 +131,9 @@ class CustomARView: ARView {
         
         // Create a visible (semi-transparent) box ModelEntity as the gesture and collision target
         let boxMesh = MeshResource.generateBox(size: boxSize)
-        let debugMaterial = SimpleMaterial(color: .gray.withAlphaComponent(0.3), isMetallic: false)
-//        let transparentMaterial = SimpleMaterial(color: .clear, isMetallic: false)
-        let wrapperEntity = ModelEntity(mesh: boxMesh, materials: [debugMaterial])
+//        let debugMaterial = SimpleMaterial(color: .gray.withAlphaComponent(0.3), isMetallic: false)
+        let transparentMaterial = SimpleMaterial(color: .clear, isMetallic: false)
+        let wrapperEntity = ModelEntity(mesh: boxMesh, materials: [transparentMaterial])
         
         // Center the wrapper on the loaded entity
 //        let bottomOffset = SIMD3<Float>(0, -boundingBox.extents.y / 2, 0)
