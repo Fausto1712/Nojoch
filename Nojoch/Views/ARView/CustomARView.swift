@@ -37,13 +37,7 @@ class CustomARView: ARView {
             configure()
             subscribeToActionStream()
         }
-//    
-//    required init(frame frameRect: CGRect, viewModel: ARViewModel) {
-//        self.viewModel = viewModel
-//        super.init(frame: frameRect)
-//                configure()
-//                subscribeToActionStream()
-//    }
+
     
     dynamic required init?(coder decoder: NSCoder) {
         fatalError("init coder not implemented")
@@ -92,8 +86,10 @@ class CustomARView: ARView {
 //        }
 //        self.scene.anchors.removeAll()
         
-        animateToTopRight()
+//        animateToTopRight()
+        
 //        addHorizontalCoaching()
+        self.scene.anchors.removeAll()
         
         let spacing: Float = 0.15 // Adjust this value to control spacing between objects
         let itemsPerRow = 4

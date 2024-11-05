@@ -21,14 +21,16 @@ struct ARInsigniasView: View {
             CustomARViewRepresentable(viewModel: viewModel)
                 .ignoresSafeArea()
             
-            VStack {
+            VStack(alignment: .center) {
                 Spacer().frame(height: 50)
                 
                 Text(viewModel.text)
                     .foregroundStyle(.white)
-                    .shadow(radius: 6)
+                    .shadow(radius: 8)
                     .padding(50)
                     .font(.title2)
+                    .multilineTextAlignment(.center)
+
                 
                 Spacer()
                 
@@ -36,7 +38,7 @@ struct ARInsigniasView: View {
                     Button {
                         ARManager.shared.actionStream.send(.showBadge(type: patrimonio.insignia))
                         clicked = true
-                        viewModel.text = "Felicidades, has desbloqueado un nuevo patrimonio: \(patrimonio.titulo)! Haz tap para interactuar"
+                        viewModel.text = "Felicidades, has desbloqueado un nuevo patrimonio: \(patrimonio.titulo)! \nHaz tap para interactuar"
                         
                     } label: {
                         HStack {
@@ -57,7 +59,7 @@ struct ARInsigniasView: View {
                             ARManager.shared.actionStream.send(.showAllBadges(type: getInsignias()))
                             //                       ARManager.shared.actionStream.send(.showBadge(type: "Texto"))
                             seeAll = true
-                            viewModel.text = "Estas son todas tus insignias. Haz tap en una para ver más información"
+                            viewModel.text = "Estas son todas tus insignias. \nHaz tap en una para ver más información"
                         } label: {
                             HStack {
                                 Image(systemName: "trophy.fill")
