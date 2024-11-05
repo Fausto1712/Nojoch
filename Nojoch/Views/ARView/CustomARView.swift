@@ -69,8 +69,7 @@ class CustomARView: ARView {
 //        addHorizontalCoaching()
         
         let spacing: Float = 0.15 // Adjust this value to control spacing between objects
-//        var currentOffset: Float = 0.0
-        let itemsPerRow = 3
+        let itemsPerRow = 4
         var row = 0
         var col = 0
             
@@ -85,8 +84,14 @@ class CustomARView: ARView {
            
             
             if let insigniaEntity = insignia {
-                insigniaEntity.position = SIMD3(Float(col) * spacing, 0, Float(row) * spacing)
-                anchor.addChild(insigniaEntity)
+//                insigniaEntity.position = SIMD3(Float(col) * spacing, 0, Float(row) * spacing)
+                
+                let wrapperEntity = createWrapper(for: insigniaEntity)
+    //            boxEntity.generateCollisionShapes(recursive: true)
+                installAllBadgesGestures(on: wrapperEntity)
+//                installGestures(on: wrapperEntity)
+                wrapperEntity.position = SIMD3(Float(col) * spacing, 0, Float(row) * spacing)
+                anchor.addChild(wrapperEntity)
                 scene.addAnchor(anchor)
                 
                 col += 1
