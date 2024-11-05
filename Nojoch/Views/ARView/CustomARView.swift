@@ -79,17 +79,23 @@ class CustomARView: ARView {
         let itemsPerRow = 4
         var row = 0
         var col = 0
+        let totalRows = (objects.count + itemsPerRow - 1) / itemsPerRow // Calculate total rows needed
+        let totalWidth = Float(itemsPerRow - 1) * spacing
+        let totalDepth = Float(totalRows - 1) * spacing
+        let xOffset = totalWidth / 2
+        let zOffset = totalDepth / 2
         let anchor = AnchorEntity(plane: .horizontal)
         
         for object in objects {
             let insignia = try? (Entity.load(named: object.value))
             
             if let insigniaEntity = insignia {
-                let wrapperEntity = createWrapper(for: insigniaEntity)
-                installAllBadgesGestures(on: wrapperEntity)
-                wrapperEntity.position = SIMD3(Float(col) * spacing, 0, Float(row) * spacing)
-                wrapperEntity.name = object.key
-                anchor.addChild(wrapperEntity)
+                
+                installAllBadgesGestures(on: insigniaEntity)
+                setNameRecursively(entity: insigniaEntity, name: object.key)
+                insigniaEntity.position = SIMD3(Float(col) * spacing - xOffset, 0, Float(row) * spacing - zOffset)
+                insigniaEntity.name = object.key
+                anchor.addChild(insigniaEntity)
                 scene.addAnchor(anchor)
                 
                 col += 1
@@ -99,7 +105,6 @@ class CustomARView: ARView {
                 }
             }
         }
-        
         
     }
     
@@ -116,15 +121,14 @@ class CustomARView: ARView {
                                             z: -cameraTransform.columns.2.z))
         
         let distanceInFront: Float = 0.3
-        var objectPosition = cameraPosition + (cameraForward * distanceInFront)
+        let objectPosition = cameraPosition + (cameraForward * distanceInFront)
         let anchor = AnchorEntity(world: objectPosition)
         
         if let insigniaEntity = insignia {
             self.initialZPosition = objectPosition.z
-            let wrapperEntity = createWrapper(for: insigniaEntity)
-            wrapperEntity.name = object
-            installGestures(on: wrapperEntity)
-            anchor.addChild(wrapperEntity)
+            setNameRecursively(entity: insigniaEntity, name: object)
+            installGestures(on: insigniaEntity)
+            anchor.addChild(insigniaEntity)
             scene.addAnchor(anchor)
         } else {
             let box = MeshResource.generateBox(size: 0.1)
@@ -134,7 +138,14 @@ class CustomARView: ARView {
             anchor.addChild(entity)
             scene.addAnchor(anchor)
         }
-
+        
+    }
+    
+    func setNameRecursively(entity: Entity, name: String) {
+        entity.name = name
+        for child in entity.children {
+            setNameRecursively(entity: child, name: name)
+        }
     }
     
     func createWrapper(for entity: Entity) -> ModelEntity {
@@ -156,14 +167,15 @@ class CustomARView: ARView {
     
     // __ Gestures __
     
-    func installGestures(on object: ModelEntity) {
-        object.generateCollisionShapes(recursive: false)
-        self.installGestures([.rotation, .scale, .translation], for: object)
+    func installGestures(on object: Entity) {
+        object.generateCollisionShapes(recursive: true)
+        //        self.installGestures([.rotation, .scale, .translation], for: object)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         self.addGestureRecognizer(tapGesture)
     }
     
-    func installAllBadgesGestures(on object: ModelEntity) {
+    func installAllBadgesGestures(on object: Entity) {
+        object.generateCollisionShapes(recursive: true)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         self.addGestureRecognizer(tapGesture)
     }

@@ -27,9 +27,11 @@ struct ARInsigniasView: View {
                 Text(viewModel.text)
                     .foregroundStyle(.white)
                     .shadow(radius: 8)
-                    .padding(50)
+                    .padding(5)
                     .font(.title2)
                     .multilineTextAlignment(.center)
+                    .background(Color(.black.opacity(viewModel.text == "" ? 0 : 0.2)))
+                    .padding(20)
                 
                 
                 Spacer()
