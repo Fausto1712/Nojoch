@@ -33,7 +33,7 @@ class CustomARView: ARView {
         configuration.planeDetection = [.horizontal]
         session.run(configuration)
         addCoachingIfNeeded()
-        addCoaching()
+        addHorizontalCoaching()
     }
     
     private var cancellables: Set<AnyCancellable> = []
@@ -48,9 +48,12 @@ class CustomARView: ARView {
                     
                 case .removeAllAnchors:
                     self?.scene.anchors.removeAll()
+                    
+                case .showAllBadges(let type):
+                    self?.loadAll(type)
                 }
                 
-                
+            
                 
                 
             }
@@ -58,18 +61,39 @@ class CustomARView: ARView {
     }
     
     func loadAll(_ objects: [String]) {
-        guard let cameraTransform = self.session.currentFrame?.camera.transform else {
-            print("Camera transform not available.")
-            return
-        }
+//        guard let cameraTransform = self.session.currentFrame?.camera.transform else {
+//            print("Camera transform not available.")
+//            return
+//        }
+        self.scene.anchors.removeAll()
+//        addHorizontalCoaching()
+        
+        let spacing: Float = 0.15 // Adjust this value to control spacing between objects
+//        var currentOffset: Float = 0.0
+        let itemsPerRow = 3
+        var row = 0
+        var col = 0
+            
+        
+        
+        let anchor = AnchorEntity(plane: .horizontal)
         
         for object in objects {
+            print("Objeto: ")
+            print(object)
             let insignia = try? (Entity.load(named: object))
-            let anchor = AnchorEntity(.plane(.vertical, classification: .any, minimumBounds: SIMD2(repeating: 0)))
+           
             
             if let insigniaEntity = insignia {
+                insigniaEntity.position = SIMD3(Float(col) * spacing, 0, Float(row) * spacing)
                 anchor.addChild(insigniaEntity)
                 scene.addAnchor(anchor)
+                
+                col += 1
+                if col >= itemsPerRow {
+                    col = 0
+                    row += 1
+                }
             }
         }
         
@@ -133,6 +157,7 @@ class CustomARView: ARView {
         let boxMesh = MeshResource.generateBox(size: boxSize)
 //        let debugMaterial = SimpleMaterial(color: .gray.withAlphaComponent(0.3), isMetallic: false)
         let transparentMaterial = SimpleMaterial(color: .clear, isMetallic: false)
+//        let transparentMaterial = UnlitMaterial(color: .white.withAlphaComponent(0.0))
         let wrapperEntity = ModelEntity(mesh: boxMesh, materials: [transparentMaterial])
         
         // Center the wrapper on the loaded entity
@@ -217,6 +242,20 @@ extension CustomARView: ARCoachingOverlayViewDelegate {
         self.addSubview(coachingOverlay)
         
         coachingOverlay.goal = .tracking
+        coachingOverlay.session = self.session
+        coachingOverlay.delegate = self
+    }
+    
+    func addHorizontalCoaching() {
+        
+        let coachingOverlay = ARCoachingOverlayView()
+        
+        coachingOverlay.autoresizingMask = [
+            .flexibleWidth, .flexibleHeight
+        ]
+        self.addSubview(coachingOverlay)
+        
+        coachingOverlay.goal = .horizontalPlane
         coachingOverlay.session = self.session
         coachingOverlay.delegate = self
     }

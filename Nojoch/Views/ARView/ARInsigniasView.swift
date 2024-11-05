@@ -50,7 +50,7 @@ struct ARInsigniasView: View {
                     }
                 } else {
                     Button {
-                        ARManager.shared.actionStream.send(.removeAllAnchors)
+                        ARManager.shared.actionStream.send(.showAllBadges(type: getInsignias()))
 //                       ARManager.shared.actionStream.send(.showBadge(type: "Texto"))
                         clicked = true
                     } label: {
@@ -78,6 +78,17 @@ struct ARInsigniasView: View {
             
             
         }
+    }
+    
+    func getInsignias() -> [String] {
+        var insignias: [String] = []
+        
+        for patrimonio in visitedPatrimonios {
+            insignias.append(patrimonio.insignia)
+        }
+        
+        
+        return insignias
     }
 }
 
