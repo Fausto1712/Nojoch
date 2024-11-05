@@ -23,32 +23,32 @@ struct HeaderAppViewOnboarding: View {
     @Query private var comunidades: [Comunidad]
     
     var body: some View {
-        HStack{
-            Circle()
-                .frame(width: 40, height: 40)
-                .foregroundStyle(isFirst ? .white : .gray.opacity(0.5))
-            
-            Spacer()
-            if isFirst{
-                OnboardingNavBarWhite(isActive: false, page: pageState)
-            } else {
-                OnboardingNavBar(isActive: false, page: pageState)
+            HStack{
+                Image(isFirst ? "mapico1" :"mapico2")
+                    .resizable()
+                    .frame(width: 60, height: 30)
+                
+                Spacer()
+                if isFirst{
+                    OnboardingNavBarWhite(isActive: false, page: pageState)
+                } else {
+                    OnboardingNavBar(isActive: false, page: pageState)
+                }
+                
+                Spacer()
+                
+                Button{
+                    isOnboardingCompleted = true
+                    router.setPath([.contentView])
+                } label: {
+                    Text("Saltar")
+                        .foregroundStyle(isFirst ? .white : .gray)
+                        .font(.custom(.raleway, style: .headline))
+                        .fontWeight(.semibold)
+                }
             }
-            
-            Spacer()
-            
-            Button{
-                isOnboardingCompleted = true
-                router.setPath([.contentView])
-            } label: {
-                Text("Saltar")
-                    .foregroundStyle(isFirst ? .white : .gray)
-                    .font(.custom(.raleway, style: .headline))
-                    .fontWeight(.semibold)
-            }
-        }
-        .padding(.horizontal)
-        .padding(.top, 8)
+            .padding(.horizontal)
+            .padding(.top, 8)
     }
 }
 
@@ -61,44 +61,35 @@ struct HeaderAppView: View {
     var body: some View {
         VStack{
             HStack{
-                Image("person1")
+                Image("mapico2")
                     .resizable()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-                    .foregroundStyle(.gray.opacity(0.5))
+                    .frame(width: 45, height: 23)
                     .onTapGesture {
                         isOnboardingCompleted = false
                         router.setPath([.contentView])
                     }
                 Text(headerTitle)
                     .foregroundStyle(.rosaMex)
-                    .font(.system(size: 22))
-                    .fontWeight(.bold)
+                    .font(.custom(.poppinsBold, style: .title2))
                 
                 Spacer()
-                
-                Image(systemName: "bookmark")
-                    .resizable()
-                    .scaledToFit()
-                    .padding(8)
-                    .frame(width: 36, height: 36)
-                    .background(.gray.opacity(0.2))
-                    .clipShape(Circle())
-                    .fontWeight(.bold)
                 
                 Image(systemName: "plus")
                     .resizable()
                     .scaledToFit()
                     .padding(10)
                     .frame(width: 36, height: 36)
-                    .background(.gray.opacity(0.2))
+                    .background(.gray.opacity(0.1))
                     .clipShape(Circle())
                     .fontWeight(.bold)
             }
+            .padding(.vertical, 4)
             Divider()
                 .background(Color.gray.opacity(0.5))
                 .padding(.horizontal, -16)
         }
+        .padding(.top, 8)
+        
     }
 }
 
@@ -196,7 +187,7 @@ struct OnboardingNavBar: View {
             .offset(x: -8)
         }
         .padding(.horizontal)
-        .offset(x: 12)
+        .offset(x: 2)
     }
 }
 
@@ -225,7 +216,7 @@ struct OnboardingNavBarWhite: View {
             .offset(x: -8)
         }
         .padding(.horizontal)
-        .offset(x: 12)
+        .offset(x: 2)
     }
 }
 
