@@ -16,6 +16,9 @@ class CustomARView: ARView {
     private var mainEntity: ModelEntity?
     var viewModel: ARViewModel?
     
+    
+    //__ Config __
+    
     init(frame frameRect: CGRect, viewModel: ARViewModel) {
         self.viewModel = viewModel
         super.init(frame: frameRect)
@@ -48,6 +51,9 @@ class CustomARView: ARView {
     
     private var cancellables: Set<AnyCancellable> = []
     
+    
+    //__ Action Stream __
+    
     func subscribeToActionStream() {
         ARManager.shared
             .actionStream
@@ -69,23 +75,16 @@ class CustomARView: ARView {
     func loadAll(_ objects: [String: String]) {
         self.scene.anchors.removeAll()
         
-        let spacing: Float = 0.15 // Adjust this value to control spacing between objects
+        let spacing: Float = 0.15
         let itemsPerRow = 4
         var row = 0
         var col = 0
-        
-        
-        
         let anchor = AnchorEntity(plane: .horizontal)
         
         for object in objects {
-            print("Objeto: ")
-            print(object)
             let insignia = try? (Entity.load(named: object.value))
             
-            
             if let insigniaEntity = insignia {
-                insigniaEntity.name = object.key
                 let wrapperEntity = createWrapper(for: insigniaEntity)
                 installAllBadgesGestures(on: wrapperEntity)
                 wrapperEntity.position = SIMD3(Float(col) * spacing, 0, Float(row) * spacing)
@@ -110,15 +109,7 @@ class CustomARView: ARView {
             return
         }
         
-        let box = try? (Entity.load(named: object))
-        var m = MeshResource.generateBox(size: 0.1)
-        if (object == "Texto") {
-            m = MeshResource.generateText("Cerro de la silla")
-        }
-        let material = SimpleMaterial(color: .blue, isMetallic: false)
-        
-        let entity = ModelEntity(mesh: m, materials: [material])
-        
+        let insignia = try? (Entity.load(named: object))
         let cameraPosition = cameraTransform.translation
         let cameraForward = normalize(SIMD3(x: -cameraTransform.columns.2.x,
                                             y: -cameraTransform.columns.2.y,
@@ -126,30 +117,24 @@ class CustomARView: ARView {
         
         let distanceInFront: Float = 0.3
         var objectPosition = cameraPosition + (cameraForward * distanceInFront)
-        
-        if (object == "Texto") {
-            objectPosition.y += 0.2
-        }
-        
         let anchor = AnchorEntity(world: objectPosition)
         
-        
-        self.initialZPosition = objectPosition.z
-        if let boxEntity = box {
-            boxEntity.name = object
-            let wrapperEntity = createWrapper(for: boxEntity)
+        if let insigniaEntity = insignia {
+            self.initialZPosition = objectPosition.z
+            let wrapperEntity = createWrapper(for: insigniaEntity)
             wrapperEntity.name = object
             installGestures(on: wrapperEntity)
-            self.mainEntity = wrapperEntity
             anchor.addChild(wrapperEntity)
             scene.addAnchor(anchor)
-            print("tap")
         } else {
-            print("no")
+            let box = MeshResource.generateBox(size: 0.1)
+            let material = SimpleMaterial(color: .blue, isMetallic: false)
+            let entity = ModelEntity(mesh: box, materials: [material])
             installGestures(on: entity)
-            anchor.addChild(box ?? entity)
+            anchor.addChild(entity)
             scene.addAnchor(anchor)
         }
+
     }
     
     func createWrapper(for entity: Entity) -> ModelEntity {
@@ -168,18 +153,8 @@ class CustomARView: ARView {
         return wrapperEntity
     }
     
-    func animateToTopRight() {
-        
-        guard let entity = self.mainEntity else { return }
-        let scaleFactor: Float = 0.3
-        let targetPosition = SIMD3<Float>(0.1, 0.5, -0.3)
-        let targetScale = SIMD3<Float>(scaleFactor, scaleFactor, scaleFactor)
-        let targetTransform = Transform(scale: targetScale, rotation: entity.orientation, translation: targetPosition)
-        entity.move(to: targetTransform, relativeTo: entity.parent, duration: 1.0)
-        
-    }
     
-    
+    // __ Gestures __
     
     func installGestures(on object: ModelEntity) {
         object.generateCollisionShapes(recursive: false)
@@ -211,6 +186,9 @@ class CustomARView: ARView {
         }
     }
     
+    
+    // __ Animations __
+    
     func moveUp(entity: Entity) {
         let scaleFactor: Float = 1.3
         
@@ -233,7 +211,6 @@ class CustomARView: ARView {
     }
     
     func moveDown(entity: Entity) {
-        
         let currentPosition = entity.position
         let targetPosition = SIMD3<Float>(
             currentPosition.x,
@@ -253,8 +230,6 @@ class CustomARView: ARView {
         
     }
     
-    
-    
     private func startRotating(entity: Entity) {
         let rotation = Transform(
             rotation: simd_quatf(angle: .pi, axis: SIMD3(x: 0, y: 1, z: 0))
@@ -273,7 +248,6 @@ class CustomARView: ARView {
         }
         
     }
-    
     
 }
 
