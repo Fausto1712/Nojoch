@@ -30,7 +30,7 @@ struct ARInsigniasView: View {
                     .padding(50)
                     .font(.title2)
                     .multilineTextAlignment(.center)
-
+                
                 
                 Spacer()
                 
