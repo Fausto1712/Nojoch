@@ -14,16 +14,17 @@ struct ARInsigniasView: View {
     
     @State var clicked = false
     @State var seeAll = false
+    @StateObject var viewModel = ARViewModel()
     
     var body: some View {
         ZStack {
-            CustomARViewRepresentable()
+            CustomARViewRepresentable(viewModel: viewModel)
                 .ignoresSafeArea()
             
             VStack {
                 Spacer().frame(height: 50)
                 
-                Text("Felicidades, has desbloqueado un nuevo patrimonio: \(patrimonio.titulo)!")
+                Text(viewModel.text)
                     .foregroundStyle(.white)
                     .shadow(radius: 6)
                     .padding(50)
@@ -34,8 +35,9 @@ struct ARInsigniasView: View {
                 if !clicked {
                     Button {
                         ARManager.shared.actionStream.send(.showBadge(type: patrimonio.insignia))
-//                       ARManager.shared.actionStream.send(.showBadge(type: "Texto"))
                         clicked = true
+                        viewModel.text = "Felicidades, has desbloqueado un nuevo patrimonio: \(patrimonio.titulo)! Haz tap para interactuar"
+                        
                     } label: {
                         HStack {
                             Image(systemName: "trophy.fill")
@@ -49,27 +51,29 @@ struct ARInsigniasView: View {
                         .cornerRadius(10)
                     }
                 } else {
-                    Button {
-                        ARManager.shared.actionStream.send(.showAllBadges(type: getInsignias()))
-//                       ARManager.shared.actionStream.send(.showBadge(type: "Texto"))
-                        clicked = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "trophy.fill")
-                            
-                            Text("Ver todas mis insignias")
+                    if !seeAll {
+                        
+                        Button {
+                            ARManager.shared.actionStream.send(.showAllBadges(type: getInsignias()))
+                            //                       ARManager.shared.actionStream.send(.showBadge(type: "Texto"))
+                            seeAll = true
+                            viewModel.text = "Estas son todas tus insignias. Haz tap en una para ver más información"
+                        } label: {
+                            HStack {
+                                Image(systemName: "trophy.fill")
+                                
+                                Text("Ver todas mis insignias")
+                            }
+                            .font(.headline)
+                            .padding()
+                            .background(.rosaMex)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
                         }
-                        .font(.headline)
-                        .padding()
-                        .background(.rosaMex)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
                     }
                 }
                 
-                if seeAll {
-                    
-                }
+                
                 
                 Spacer().frame(height: 50)
                 
@@ -80,13 +84,12 @@ struct ARInsigniasView: View {
         }
     }
     
-    func getInsignias() -> [String] {
-        var insignias: [String] = []
+    func getInsignias() -> [String : String] {
+        var insignias: [String : String] = [:]
         
         for patrimonio in visitedPatrimonios {
-            insignias.append(patrimonio.insignia)
+            insignias[patrimonio.titulo] = patrimonio.insignia
         }
-        
         
         return insignias
     }

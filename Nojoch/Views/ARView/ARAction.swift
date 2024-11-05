@@ -11,5 +11,5 @@ import SwiftUI
 enum ARAction {
     case showBadge(type: String)
     case removeAllAnchors
-    case showAllBadges(type: [String])
+    case showAllBadges(type: [String : String])
 }

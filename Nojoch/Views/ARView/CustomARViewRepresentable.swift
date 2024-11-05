@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct CustomARViewRepresentable: UIViewRepresentable {
+    var viewModel: ARViewModel
     
     func makeUIView(context: Context) -> CustomARView {
-        return CustomARView()
+        return CustomARView(viewModel: viewModel)
     }
     
     func updateUIView(_ uiView: CustomARView, context: Context) {}

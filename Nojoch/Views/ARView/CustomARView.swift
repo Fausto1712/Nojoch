@@ -11,21 +11,45 @@ import SwiftUI
 
 import Combine
 
+
+
 class CustomARView: ARView {
     private var initialZPosition: Float?
+    public var selected = ""
+    var viewModel: ARViewModel?
     
-    required init(frame frameRect: CGRect) {
-        super.init(frame: frameRect)
-    }
+    
+        
+//    func setViewModel(vm: ARViewModel) {
+//        viewModel = vm
+//    }
+    init(frame frameRect: CGRect, viewModel: ARViewModel) {
+            self.viewModel = viewModel
+            super.init(frame: frameRect)
+            configure()
+            subscribeToActionStream()
+        }
+
+        // Required initializer with frame
+        required init(frame frameRect: CGRect) {
+            super.init(frame: frameRect)
+            configure()
+            subscribeToActionStream()
+        }
+//    
+//    required init(frame frameRect: CGRect, viewModel: ARViewModel) {
+//        self.viewModel = viewModel
+//        super.init(frame: frameRect)
+//                configure()
+//                subscribeToActionStream()
+//    }
     
     dynamic required init?(coder decoder: NSCoder) {
         fatalError("init coder not implemented")
     }
     
-    convenience init() {
-        self.init(frame: UIScreen.main.bounds)
-        configure()
-        subscribeToActionStream()
+    convenience init(viewModel: ARViewModel) {
+        self.init(frame: UIScreen.main.bounds, viewModel: viewModel)
     }
     
     func configure() {
@@ -60,7 +84,7 @@ class CustomARView: ARView {
             .store(in: &cancellables)
     }
     
-    func loadAll(_ objects: [String]) {
+    func loadAll(_ objects: [String: String]) {
 //        guard let cameraTransform = self.session.currentFrame?.camera.transform else {
 //            print("Camera transform not available.")
 //            return
@@ -80,17 +104,18 @@ class CustomARView: ARView {
         for object in objects {
             print("Objeto: ")
             print(object)
-            let insignia = try? (Entity.load(named: object))
-           
+            let insignia = try? (Entity.load(named: object.value))
+            
             
             if let insigniaEntity = insignia {
 //                insigniaEntity.position = SIMD3(Float(col) * spacing, 0, Float(row) * spacing)
-                
+                insigniaEntity.name = object.key
                 let wrapperEntity = createWrapper(for: insigniaEntity)
     //            boxEntity.generateCollisionShapes(recursive: true)
                 installAllBadgesGestures(on: wrapperEntity)
 //                installGestures(on: wrapperEntity)
                 wrapperEntity.position = SIMD3(Float(col) * spacing, 0, Float(row) * spacing)
+                wrapperEntity.name = object.key
                 anchor.addChild(wrapperEntity)
                 scene.addAnchor(anchor)
                 
@@ -140,7 +165,9 @@ class CustomARView: ARView {
         
         self.initialZPosition = objectPosition.z
         if let boxEntity = box {
+            boxEntity.name = object
             let wrapperEntity = createWrapper(for: boxEntity)
+            wrapperEntity.name = object
 //            boxEntity.generateCollisionShapes(recursive: true)
             installGestures(on: wrapperEntity)
             anchor.addChild(wrapperEntity)
@@ -170,6 +197,7 @@ class CustomARView: ARView {
         
         entity.position = SIMD3(x: 0, y: -boxSize.y / 2, z: 0)
         
+        
         // Add the internal anchor to the wrapper
         wrapperEntity.addChild(entity)
         
@@ -190,7 +218,30 @@ class CustomARView: ARView {
         self.addGestureRecognizer(tapGesture)
     }
     
+    func installAllBadgesGestures(on object: ModelEntity) {
+//        object.generateCollisionShapes(recursive: true)
+        
+        // Built-in gestures: rotate, scale, and translation
+//        self.installGestures([.rotation, .scale, .translation], for: object)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        self.addGestureRecognizer(tapGesture)
+    }
+    
     @objc func handleTap(_ gesture: UITapGestureRecognizer) {
+        let location = gesture.location(in: self)
+        
+        if let entity = self.entity(at: location) {
+            print("Tapped on entity: \(entity.name)")
+            
+            selected = entity.name
+            viewModel?.setSelection(entity.name)
+            startRotating(entity: entity)
+        }
+    }
+    
+    @objc func handleTapAll(_ gesture: UITapGestureRecognizer, _ selection: String) {
+        selected = selection
         let location = gesture.location(in: self)
         
         if let entity = self.entity(at: location) {
