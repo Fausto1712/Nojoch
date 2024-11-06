@@ -16,27 +16,26 @@ struct tagCard:View {
                     Text(tag)
                         .foregroundStyle(.white)
                         .fontWeight(.bold)
-                        .font(.system(size: 12))
+                        .font(.custom(.poppinsSemiBold, style: .caption))
                     Spacer()
                 }
                 Spacer()
             }
-            .padding(5)
+            .padding(8)
             
             ZStack {
                 RoundedRectangle(cornerRadius: 4)
                     .fill(Color.white)
                     .frame(width: 45, height: 45)
                     .rotationEffect(.degrees(45))
-                    .shadow(color: .black.opacity(0.3), radius: 5, x: 2, y: 5)
+                    .shadow(color: .black.opacity(0.3), radius: 0.7, x: -1, y: 2)
                 
                 Text(String.tagEmojis[tag] ?? "🌍")
-                    .font(.system(size: 25))
+                    .font(.title2)
             }
-            .offset(x:30, y: 15)
-            .shadow(color: .black.opacity(0.3), radius: 5, x: 2, y: 2)
+            .offset(x:45, y: 20)
         }
-        .frame(width: 100, height: 60)
+        .frame(width: 120, height: 70)
         .background(Color.tagColors[tag] ?? .rosaMex)
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }

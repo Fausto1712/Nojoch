@@ -42,6 +42,7 @@ struct comunidadView: View {
                     ubicacionComunidad(camera: $camera, selectedTag: $selectedTag, comunidad: comunidad)
                 }
                 .scrollIndicators(.hidden)
+                .padding(.top, -18)
             }
             .padding(.top, 260)
         }
@@ -103,25 +104,34 @@ struct headerComunidad:View {
 struct descripcionComunidad:View {
     var comunidad: Comunidad
     var body: some View {
-        HStack{
-            VStack(alignment: .leading){
-                Text(comunidad.nombre)
-                    .font(.system(size: 28))
-                    .fontWeight(.bold)
-                    .foregroundStyle(.rosaMex)
+        VStack{
+            HStack{
+                VStack(alignment: .leading){
+                    Text(comunidad.nombre)
+                        .foregroundStyle(.rosaMex)
+                        .font(.custom(.poppinsBold, style: .title2))
+                    
+                    Text(comunidad.estado)
+                        .foregroundStyle(.secondary)
+                        .font(.custom(.raleway, style: .headline))
+                        .fontWeight(.semibold)
+                }
                 
-                Text(comunidad.estado)
-                    .foregroundStyle(.gray)
+                Spacer()
+                
+                Text("Zona Rural")
+                    .foregroundStyle(.rosaMex)
+                    .font(.custom(.poppinsSemiBold, style: .body))
             }
-            
-            Spacer()
-            
-            Text("Zona Rural")
-                .fontWeight(.semibold)
-                .font(.system(size: 17))
-                .foregroundStyle(.rosaMex)
+            .padding()
+            .padding(.top, 4)
         }
-        .padding()
+        Rectangle()
+            .foregroundStyle(.quinary)
+            .frame(maxWidth: .infinity)
+            .frame(height: 4)
+            .padding(.top, -8)
+            .padding(.bottom, 6)
     }
 }
 
@@ -132,11 +142,13 @@ struct tagsComunidad: View {
             Text("Tags")
                 .fontWeight(.semibold)
                 .foregroundStyle(.rosaMex) +
-            Text(" de interes")
+            Text(" de interés")
                 .fontWeight(.semibold)
             Spacer()
         }
-        .padding(.leading,20)
+        .font(.custom(.poppinsSemiBold, style: .body))
+        .padding(.horizontal)
+        .padding(.vertical, 14)
         
         ScrollView(.horizontal){
             HStack{
@@ -147,7 +159,7 @@ struct tagsComunidad: View {
             .padding(.bottom, 5)
         }
         .frame(height: 50)
-        .padding(.leading, 20)
+        .padding(.leading, 16)
         .padding(.bottom)
         .scrollIndicators(.hidden)
     }
@@ -164,7 +176,10 @@ struct postsComunidad:View {
                 .fontWeight(.semibold)
             Spacer()
         }
-        .padding(.leading,20)
+        .font(.custom(.poppinsSemiBold, style: .body))
+        .padding(.horizontal)
+        .padding(.top, 4)
+        .padding(.bottom, 2)
         
         ScrollView(.horizontal){
             HStack{
@@ -174,7 +189,7 @@ struct postsComunidad:View {
             }
             .padding(.bottom, 5)
         }
-        .padding(.leading, 20)
+        .padding(.leading, 16)
         .padding(.bottom)
         .scrollIndicators(.hidden)
     }
@@ -188,21 +203,24 @@ struct ubicacionComunidad:View {
     var body: some View {
         VStack{
             HStack{
-                Text("Ubicacion")
+                Text("Ubicación")
                     .fontWeight(.semibold)
                     .foregroundStyle(.rosaMex) +
                 Text(" de \(comunidad.nombre)")
                     .fontWeight(.semibold)
                 Spacer()
             }
-            .padding(.leading,20)
+            .font(.custom(.poppinsSemiBold, style: .body))
+            .padding(.horizontal)
+            .padding(.top, -4)
+            .padding(.bottom, 4)
             
             Map(position: $camera, selection: $selectedTag){
                 Marker(comunidad.nombre, coordinate: CLLocationCoordinate2D(latitude: comunidad.coordenadas[0], longitude: comunidad.coordenadas[1]))
                     .tag(comunidad.id)
                 UserAnnotation()
             }
-            .frame(width: 360, height: 155)
+            .frame(width: 361, height: 155)
             .clipShape(RoundedRectangle(cornerRadius: 15))
             .mapStyle(.standard)
             .mapControls { MapScaleView() }

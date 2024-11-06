@@ -153,9 +153,11 @@ struct HeaderAppViewComponent: View {
                         .overlay{
                             Image(systemName: "chevron.left")
                                 .resizable()
+                                .scaledToFit()
                                 .foregroundStyle(.black)
                                 .frame(width: 10, height: 20)
                                 .fontWeight(.bold)
+                                .offset(x: -1)
                         }
                 }
                 
@@ -167,7 +169,7 @@ struct HeaderAppViewComponent: View {
                         Image(systemName: "bookmark")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 15)
+                            .frame(width: 12)
                             .fontWeight(.bold)
                     }
             }
