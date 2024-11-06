@@ -91,12 +91,7 @@ struct descripcionPatrimonio:View {
                 VStack(alignment: .leading){
                     Text(patrimonio.titulo)
                         .foregroundStyle(.rosaMex)
-                        .font(.custom(.poppinsBold, style: .title2)) //+
-                    
-//                    Text(", " + patrimonio.estado)
-//                        .foregroundStyle(.secondary)
-//                        .font(.custom(.poppinsBold, style: .title2))
-//                        .fontWeight(.semibold)
+                        .font(.custom(.poppinsBold, style: .title2))
                     
                     HStack{
                         Image(patrimonio.personaFoto)

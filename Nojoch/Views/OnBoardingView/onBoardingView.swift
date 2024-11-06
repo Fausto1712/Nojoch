@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import SceneKit
 
 struct onBoardingView: View {
     @AppStorage("isOnboardingCompleted") var isOnboardingCompleted: Bool = false
@@ -58,6 +59,7 @@ struct continueButton: View {
                 .fontWeight(.semibold)
                 .cornerRadius(12)
                 .padding(.top, 20)
+                .accessibility(label: Text("Siguiente"))
         }
     }
 }
@@ -130,19 +132,22 @@ struct firstOnboardingView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Bienvenido a\n")
-                        .font(.custom(.poppinsBold, style: .largeTitle))
-                        .foregroundStyle(.white) +
-                    Text("Herencia Viva")
-                        .foregroundStyle(.deepPink)
-                        .font(.custom(.poppinsBold, style: .largeTitle))
+                    VStack(alignment: .leading, spacing: 2){
+                        Text("Bienvenido a\n")
+                            .font(.custom(.poppinsBold, style: .largeTitle))
+                            .foregroundStyle(.white) +
+                        Text("Herencia Viva")
+                            .foregroundStyle(.deepPink)
+                            .font(.custom(.poppinsBold, style: .largeTitle))
+                    }
+                    .accessibility(label: Text("Bienvenido a Herencia Viva"))
                     
                     Text("Descubre los lugares más ocultos e impresionantes de México con nosotros.")
                         .foregroundStyle(.white)
                         .font(.custom(.raleway, style: .callout))
                         .fontWeight(.semibold)
                         .lineSpacing(4)
-                    
+                        .accessibility(label: Text("Descubre los lugares más ocultos e impresionantes de México con nosotros."))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, 72)
@@ -209,16 +214,19 @@ struct secondOnboardingView: View {
         VStack(alignment: .leading){
             Text("Descubre")
                 .font(.custom(.poppinsBold, style: .largeTitle))
+                .accessibility(label: Text("Descubre"))
             Text("comunidades")
                 .font(.custom(.poppinsBold, style: .largeTitle))
                 .foregroundStyle(.rosaMex)
                 .padding(.top, -36)
+                .accessibility(label: Text("Comunidades"))
             
             
             Text("Conoce lo que las comunidades tienen \npara ofrecer mediante posts en tu feed.")
                 .font(.custom(.raleway, style: .callout))
                 .fontWeight(.semibold)
                 .foregroundStyle(.secondary)
+                .accessibility(label: Text("Conoce lo que las comunidades tienen \npara ofrecer mediante posts en tu feed."))
             
             patrimonioCard(patrimonio: Patrimonio(id: 0, tags: ["Rural", "Descubre", "Patrimonio", "Hike", "Aventura", "Agua"], persona: "La Cumbre Cotidiana", personaFoto: "person5", estado: "Nuevo León", comunidad: "Puerto Genovevo", titulo: "Cañon Matacanes", descripcion: "", coordinates: [25.371573866134465, -100.15547982938328], ubicacion: "Cola de caballo", fotos: ["matacanes1", "matacanes2", "matacanes3"], idioma: "Náhuatl", favorited: false, visited: false, estrella: 5))
                 .padding(.top, 12)
@@ -250,16 +258,20 @@ struct thirdOnboardingView: View {
             VStack (alignment: .leading){
                 Text("Visita patrimonios")
                     .font(.custom(.poppinsBold, style: .largeTitle))
+                    .accessibility(label: Text("Visita patrimonios"))
+                
                 
                 Text("únicos")
                     .font(.custom(.poppinsBold, style: .largeTitle))
                     .foregroundStyle(.rosaMex)
                     .padding(.top, -36)
+                    .accessibility(label: Text("únicos"))
                 
                 Text("Conoce por estado y explora su \npatrimonio, naturaleza y comunidad.")
                     .font(.custom(.raleway, style: .callout))
                     .fontWeight(.semibold)
                     .foregroundStyle(.secondary)
+                    .accessibility(label: Text("Conoce por estado y explora su \npatrimonio, naturaleza y comunidad."))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             
@@ -304,38 +316,72 @@ struct thirdOnboardingView: View {
 struct fourthOnboardingView: View {
     @Query private var estados: [Estado]
     @Binding var pageState: Int
+    
     var body: some View {
-        
-        VStack{
+        VStack {
             HeaderAppViewOnboarding(pageState: pageState, isFirst: false)
         }
         
-        VStack{
-            VStack(alignment: .leading, spacing: 0){
-                Text("Alístate para \nla ")
-                    .font(.custom(.poppinsBold, style: .largeTitle)) +
-                
-                Text("aventura")
-                    .font(.custom(.poppinsBold, style: .largeTitle))
-                    .foregroundStyle(.rosaMex)
-                   
-                
-//                + Text("?")
-//                    .font(.custom(.poppinsBold, style: .largeTitle))
+        VStack {
+            VStack(alignment: .leading, spacing: 0) {
+                VStack{
+                    Text("Alístate para \nla ")
+                        .font(.custom(.poppinsBold, style: .largeTitle)) +
+                    Text("aventura")
+                        .font(.custom(.poppinsBold, style: .largeTitle))
+                        .foregroundStyle(.rosaMex)
+                }
+                .accessibility(label: Text("Alistate para la aventura"))
                 
                 Text("Comparte tu progreso al explorar las comunidades que México tiene para tí.")
                     .font(.custom(.raleway, style: .callout))
                     .fontWeight(.semibold)
                     .foregroundStyle(.secondary)
-                
+                    .accessibility(label: Text("Comparte tu progreso al explorar las comunidades que México tiene para tí."))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.top, -4)
             
             Spacer()
+            
+            AlebrijeSceneView()
+                .frame(height: 300)
+            
+            Spacer()
             continueButton(pageState: $pageState, isFirst: false)
         }
         .padding()
+    }
+}
+
+
+struct AlebrijeSceneView: UIViewRepresentable {
+    func makeUIView(context: Context) -> SCNView {
+        let sceneView = SCNView()
+        let scene = SCNScene(named: "alebrije.usdz")
+        
+        let lightNode = SCNNode()
+        lightNode.light = SCNLight()
+        lightNode.light?.type = .omni
+        lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
+
+        let ambientLightNode = SCNNode()
+        ambientLightNode.light = SCNLight()
+        ambientLightNode.light?.type = .ambient
+        ambientLightNode.light?.intensity = 1000
+        ambientLightNode.light?.color = UIColor.white
+        
+        scene?.rootNode.addChildNode(lightNode)
+        scene?.rootNode.addChildNode(ambientLightNode)
+        
+        sceneView.scene = scene
+        sceneView.allowsCameraControl = true
+        sceneView.backgroundColor = .clear
+        
+        return sceneView
+    }
+    
+    func updateUIView(_ uiView: SCNView, context: Context) {
     }
 }
 
