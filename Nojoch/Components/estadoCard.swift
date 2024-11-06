@@ -13,8 +13,9 @@ struct estadoCard:View {
         HStack{
             Image(estado.icono)
                 .resizable()
-                .frame(width: 45, height: 45)
-                .shadow(radius: 4)
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 52, height: 52)
+                .shadow(color: .black.opacity(0.4), radius: 1)
                 .padding(.leading, 4)
             
             Text(estado.nombre)
@@ -29,10 +30,11 @@ struct estadoCard:View {
                 .foregroundStyle(.secondary)
                 .fontWeight(.medium)
                 .frame(width: 10, height: 20)
-                .padding(.trailing, 8)
+                .padding(.trailing, 4)
         }
+        //.padding(.bottom, 4)
         .padding(8)
-        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white).shadow(radius: 1.5))
+        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white).shadow(color: .black.opacity(0.25), radius: 1))
         .padding(.horizontal)
     }
 }

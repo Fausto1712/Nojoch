@@ -17,14 +17,15 @@ struct comunidadCard:View {
                 .background(Color.gray.opacity(0.2))
                 .clipShape(RoundedRectangle(cornerRadius: 10))
             
-            VStack(alignment: .leading){
+            VStack(alignment: .leading, spacing: 4){
                 Text(comunidad.nombre)
-                    .font(.system(size: 20))
-                    .fontWeight(.semibold)
+                    .font(.custom(.raleway, style: .callout))
+                    .fontWeight(.bold)
                 
                 Text(comunidad.estado)
-                    .font(.system(size: 16))
-                    .fontWeight(.light)
+                    .font(.custom(.raleway, style: .footnote))
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.secondary)
             }
             
             Spacer()
@@ -32,9 +33,12 @@ struct comunidadCard:View {
             Image(systemName: "chevron.right")
                 .resizable()
                 .frame(width: 10, height: 20)
+                .foregroundStyle(.secondary)
+                .fontWeight(.medium)
+                .padding(.trailing, 4)
         }
         .padding(8)
-        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white).shadow(radius: 3))
+        .background(RoundedRectangle(cornerRadius: 10).fill(Color.white).shadow(color: .black.opacity(0.25), radius: 1))
         .padding(.horizontal)
     }
 }

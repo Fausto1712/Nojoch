@@ -13,7 +13,7 @@ import CoreLocation
 struct exploreView: View {
     @Environment(\.modelContext) private var modelContext
     
-    @State private var isPresentingMap: Bool = true
+    @State private var isPresentingMap: Bool = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -64,7 +64,8 @@ struct mapExploreView:View {
                         HStack{
                             Image(systemName: "camera.fill")
                             
-                            Text(" Abrir Cámara")
+                            Text("Abrir Cámara")
+                                .font(.custom(.poppinsSemiBold, style: .subheadline))
                         }
                         .font(.headline)
                         .padding()
@@ -130,17 +131,23 @@ struct searchExploreView:View {
     var body: some View {
         VStack{
             HeaderAppViewExplore(isPresentingmap: $isPresentingMap, headerTitle: "Explora")
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 16)
             
             HStack{
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.gray)
                     .fontWeight(.bold)
+                    .offset(x: -4)
+                    .font(.headline)
                 TextField("Coahuila, Sierra Tarahumara...", text: $searchText)
+                    .font(.custom(.raleway, style: .headline))
+                    .fontWeight(.medium)
+                    .foregroundStyle(.secondary)
+                    .offset(x: -2)
             }
             .padding(.horizontal)
             .padding(.vertical, 10)
-            .background(Color.gray.opacity(0.2))
+            .background(Color.gray.opacity(0.15))
             .cornerRadius(10)
             .padding(10)
             
@@ -149,24 +156,26 @@ struct searchExploreView:View {
                     .foregroundStyle(.black.opacity(0.8))
                     .fontWeight(.semibold)
                     .padding(10)
-                    .background(selectedCategory == "Estado" ? .gray.opacity(0.2) : .clear)
+                    .background(selectedCategory == "Estado" ? .gray.opacity(0.1) : .clear)
                     .clipShape(RoundedRectangle(cornerRadius: 5))
                     .onTapGesture {
-                        selectedCategory = "Estado"
+                        withAnimation{selectedCategory = "Estado"}
                     }
                 
                 Text("Comunidades")
                     .foregroundStyle(.black.opacity(0.8))
                     .padding(10)
-                    .background(selectedCategory == "Comunidad" ? .gray.opacity(0.2) : .clear)
+                    .background(selectedCategory == "Comunidad" ? .gray.opacity(0.1) : .clear)
                     .clipShape(RoundedRectangle(cornerRadius: 5))
                     .onTapGesture {
-                        selectedCategory = "Comunidad"
+                        withAnimation{selectedCategory = "Comunidad"}
                     }
                 
                 Spacer()
             }
-            .padding(.horizontal)
+            .font(.custom(.raleway, style: .subheadline))
+            .padding(.horizontal, 12)
+            .fontWeight(.semibold)
             
             ScrollView {
                 if selectedCategory == "Estado" {
@@ -180,10 +189,14 @@ struct searchExploreView:View {
                             .font(.system(size: 17))
                         Spacer()
                     }
+                    .font(.custom(.poppinsSemiBold, style: .headline))
                     .padding(.horizontal)
+                    .padding(.top, 8)
+                    .padding(.bottom, 12)
+                    
                     ForEach(filteredEstados(), id: \.id) { estado in
                         estadoCard(estado: estado)
-                            .padding(.top)
+                            .padding(.bottom, 4)
                             .onTapGesture {
                                 router.navigate(to: .estadoView(estado: estado))
                             }
@@ -201,10 +214,14 @@ struct searchExploreView:View {
                             .font(.system(size: 17))
                         Spacer()
                     }
+                    .font(.custom(.poppinsSemiBold, style: .headline))
                     .padding(.horizontal)
+                    .padding(.top, 8)
+                    .padding(.bottom, 12)
+                    
                     ForEach(filteredComunidades(), id: \.id) { comunidad in
                         comunidadCard(comunidad: comunidad)
-                            .padding(.top)
+                            .padding(.bottom, 4)
                             .onTapGesture {
                                 router.navigate(to: .comunidadView(comunidad: comunidad))
                             }
@@ -233,5 +250,5 @@ struct searchExploreView:View {
 }
 
 #Preview {
-    exploreView()
+    // exploreView()
 }
