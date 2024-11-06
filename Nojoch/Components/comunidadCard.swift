@@ -27,7 +27,7 @@ struct comunidadCard:View {
                     .fontWeight(.semibold)
                     .foregroundStyle(.secondary)
             }
-            
+            .padding(.leading, 4)
             Spacer()
             
             Image(systemName: "chevron.right")
