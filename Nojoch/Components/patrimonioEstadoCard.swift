@@ -24,21 +24,24 @@ struct patrimonioEstadoCard:View {
                     HStack{
                         Image(patrimonio.personaFoto)
                             .resizable()
-                            .frame(width: 30, height: 30)
+                            .frame(width: 24, height: 24)
                             .clipShape(Circle())
                         Text(patrimonio.persona)
-                            .font(.system(size: 10))
+                            .font(.custom(.raleway, style: .footnote))
+                            .fontWeight(.semibold)
                         Spacer()
                         Text(patrimonio.idioma)
-                            .font(.system(size: 10))
+                            .font(.custom(.raleway, style: .caption))
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.secondary)
                     }
-                    .padding(.init(top: 5, leading: 10, bottom: 10, trailing: 10))
+                    .padding(.init(top: 8, leading: 10, bottom: 10, trailing: 10))
                     .background(.white)
                 }
             }
         }
         .frame(width: 224, height: 160)
-        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(color: .black.opacity(0.3), radius: 0.5, x: 0, y: 0.5)
         .onTapGesture {
             router.navigate(to: .patrimonio(patrimonio: patrimonio))
