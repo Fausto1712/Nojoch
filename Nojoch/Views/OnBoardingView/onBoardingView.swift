@@ -260,15 +260,37 @@ struct thirdOnboardingView: View {
                     .font(.custom(.raleway, style: .callout))
                     .fontWeight(.semibold)
                     .foregroundStyle(.secondary)
-                Spacer()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             
-            
-            ForEach(estados.prefix(5), id: \.id) { estado in
-                estadoCard(estado: estado)
-                    .padding(.top, 5)
+            VStack{
+                ForEach(estados.prefix(5), id: \.id) { estado in
+                    HStack {
+                        Image(estado.icono)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 52, height: 52)
+                            .shadow(color: .black.opacity(0.4), radius: 1)
+                            .padding(.leading, 4)
+                        
+                        Text(estado.nombre)
+                            .font(.custom(.raleway, style: .callout))
+                            .fontWeight(.bold)
+                            .padding(.leading, 8)
+                        
+                        Spacer()
+                    }
+                    .padding(8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.white)
+                            .shadow(color: .black.opacity(0.25), radius: 1)
+                    )
+                    .padding(.bottom, 4)
+
+                }
             }
+            .padding(.top, 8)
             
             Spacer()
             
