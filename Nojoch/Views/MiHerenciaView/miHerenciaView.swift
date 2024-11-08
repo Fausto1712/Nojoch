@@ -146,7 +146,7 @@ struct visitedPatrimonios:View {
             Spacer()
         }
         .font(.custom(.poppinsSemiBold, style: .body))
-        .padding(.leading,20)
+        .padding(.leading)
         
         ScrollView(.horizontal){
             HStack{

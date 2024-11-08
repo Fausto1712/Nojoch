@@ -135,18 +135,21 @@ struct tagsPatrimonio: View {
         .padding(.horizontal)
         .padding(.vertical, 14)
         
-        ScrollView(.horizontal){
-            HStack{
-                ForEach(tags, id: \.self){ tag in
-                    tagCard(tag: tag)
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 0) {
+                Spacer()
+                    .frame(width: 16)
+                HStack(spacing: 8) {
+                    ForEach(tags, id: \.self) { tag in
+                        tagCard(tag: tag)
+                    }
                 }
+                Spacer()
+                    .frame(width: 16)
             }
             .padding(.bottom, 5)
         }
         .frame(height: 50)
-        .padding(.leading, 16)
-        .padding(.bottom)
-        .scrollIndicators(.hidden)
     }
 }
 

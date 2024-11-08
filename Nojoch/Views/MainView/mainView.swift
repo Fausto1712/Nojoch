@@ -44,9 +44,11 @@ struct mainView: View {
                     .frame(height: 4)
                     .padding(.vertical, 12)
                 
+                
+                
                 ForEach(patrimonios, id: \.id) { patrimonio in
                     patrimonioCard(patrimonio: patrimonio)
-                        .padding(.horizontal)
+                    //.padding(.horizontal)
                     
                     Rectangle()
                         .foregroundStyle(.quinary)
@@ -119,6 +121,7 @@ struct patrimonioCard: View {
                         .offset(y: -2)
                 }
             }
+            .padding(.horizontal)
             VStack{
                 if patrimonio.descripcion != "" {
                     Text(patrimonio.descripcion)
@@ -138,9 +141,15 @@ struct patrimonioCard: View {
                 .frame(height: 265)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .tabViewStyle(PageTabViewStyle())
-                
-                ScrollView(.horizontal) {
-                    HStack {
+            }
+            .padding(.horizontal)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 0) {
+                    Spacer()
+                        .frame(width: 16)
+
+                    HStack(spacing: 8) {
                         ForEach(tagTranslations, id: \.original) { tagTranslation in
                             HStack(spacing: 8) {
                                 Circle()
@@ -157,22 +166,26 @@ struct patrimonioCard: View {
                             .clipShape(RoundedRectangle(cornerRadius: 6))
                         }
                     }
-                }
-                .scrollIndicators(.hidden)
-                .padding([.top, .bottom], 4)
-                
-                HStack {
-                    Text(patrimonio.fecha.toSpanishFormattedString())
-                        .font(.custom(.raleway, style: .caption))
-                        .fontWeight(.regular)
-                        .foregroundStyle(.secondary)
+
                     Spacer()
+                        .frame(width: 16)
                 }
-                .padding(.top, 4)
             }
-            .onTapGesture {
-                router.navigate(to: .patrimonio(patrimonio: patrimonio))
+            .padding(.vertical, 4)
+
+            
+            HStack {
+                Text(patrimonio.fecha.toSpanishFormattedString())
+                    .font(.custom(.raleway, style: .caption))
+                    .fontWeight(.regular)
+                    .foregroundStyle(.secondary)
+                Spacer()
             }
+            .padding(.top, 4)
+            .padding(.horizontal)
+        }
+        .onTapGesture {
+            router.navigate(to: .patrimonio(patrimonio: patrimonio))
         }
         .onAppear {
             setupTagTranslations()
