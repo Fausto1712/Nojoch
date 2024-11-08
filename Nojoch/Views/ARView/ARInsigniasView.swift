@@ -38,7 +38,7 @@ struct ARInsigniasView: View {
                 
                 if !clicked {
                     Button {
-                        ARManager.shared.actionStream.send(.showBadge(type: patrimonio.insignia))
+                        ARManager.shared.actionStream.send(.showBadge(type: patrimonio.insignia, patrimonio.titulo))
                         clicked = true
                         viewModel.text = "Felicidades, has desbloqueado un nuevo patrimonio: \(patrimonio.titulo)! \nHaz tap para interactuar"
                         

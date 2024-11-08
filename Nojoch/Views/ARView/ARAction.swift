@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 enum ARAction {
-    case showBadge(type: String)
+    case showBadge(type: String, String)
     case removeAllAnchors
     case showAllBadges(type: [String : String])
 }

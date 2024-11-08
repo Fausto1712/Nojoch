@@ -12,8 +12,6 @@ import SwiftUI
 
 class CustomARView: ARView {
     private var initialZPosition: Float?
-    public var selected = ""
-    private var mainEntity: ModelEntity?
     var viewModel: ARViewModel?
     
     
@@ -59,8 +57,8 @@ class CustomARView: ARView {
             .actionStream
             .sink { [weak self] action in
                 switch action {
-                case .showBadge(let type):
-                    self?.loadObj(type)
+                case .showBadge(let file, let name):
+                    self?.loadObj(file: file, name: name)
                     
                 case .removeAllAnchors:
                     self?.scene.anchors.removeAll()
@@ -75,7 +73,7 @@ class CustomARView: ARView {
     func loadAll(_ objects: [String: String]) {
         self.scene.anchors.removeAll()
         
-        let spacing: Float = 0.15
+        let spacing: Float = 0.19
         let itemsPerRow = 4
         var row = 0
         var col = 0
@@ -108,7 +106,7 @@ class CustomARView: ARView {
         
     }
     
-    func loadObj(_ object: String) {
+    func loadObj(file object: String, name: String) {
         guard let cameraTransform = self.session.currentFrame?.camera.transform else {
             print("Camera transform not available.")
             return
@@ -126,7 +124,7 @@ class CustomARView: ARView {
         
         if let insigniaEntity = insignia {
             self.initialZPosition = objectPosition.z
-            setNameRecursively(entity: insigniaEntity, name: object)
+            setNameRecursively(entity: insigniaEntity, name: name)
             installGestures(on: insigniaEntity)
             anchor.addChild(insigniaEntity)
             scene.addAnchor(anchor)
@@ -186,7 +184,6 @@ class CustomARView: ARView {
         if let entity = self.entity(at: location) {
             print("Tapped on entity: \(entity.name)")
             
-            selected = entity.name
             viewModel?.setSelection(entity.name)
             
             moveUp(entity: entity)
