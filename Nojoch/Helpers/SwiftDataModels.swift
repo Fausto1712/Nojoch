@@ -47,6 +47,26 @@ final class Patrimonio : Identifiable {
         self.fecha = Date()
         self.insignia = ""
     }
+    
+    init(id: Int, tags: [String], persona: String, personaFoto: String, estado: String, comunidad: String, titulo: String, descripcion: String, coordinates: [Double], ubicacion: String, fotos: [String], idioma: String, favorited: Bool, visited: Bool, estrella: Int, insignia: String) {
+        self.id = id
+        self.tags = tags
+        self.persona = persona
+        self.personaFoto = personaFoto
+        self.estado = estado
+        self.comunidad = comunidad
+        self.titulo = titulo
+        self.descripcion = descripcion
+        self.coordinates = coordinates
+        self.ubicacion = ubicacion
+        self.fotos = fotos
+        self.idioma = idioma
+        self.favorited = favorited
+        self.visited = visited
+        self.estrella = estrella
+        self.fecha = Date()
+        self.insignia = insignia
+    }
 }
 
 @Model

@@ -12,8 +12,6 @@ import SwiftUI
 
 class CustomARView: ARView {
     private var initialZPosition: Float?
-    public var selected = ""
-    private var mainEntity: ModelEntity?
     var viewModel: ARViewModel?
     
     
@@ -186,7 +184,6 @@ class CustomARView: ARView {
         if let entity = self.entity(at: location) {
             print("Tapped on entity: \(entity.name)")
             
-            selected = entity.name
             viewModel?.setSelection(entity.name)
             
             moveUp(entity: entity)

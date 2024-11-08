@@ -8,7 +8,6 @@
 import Foundation
 
 class ARViewModel: ObservableObject {
-    @Published var selection: String = ""
     @Published var text: String = ""
     func setSelection(_ selected: String) {
         text = selected
