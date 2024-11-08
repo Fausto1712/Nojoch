@@ -33,9 +33,10 @@ struct patrimonioView: View {
                     
                     ubicacionPatrimonio(camera: $camera, selectedTag: $selectedTag, patrimonio: patrimonio)
                     
-                    estadoPatrimonio(estado: estado[0])
+                    estadoPatrimonio(estado: estado[0], patrimonio: patrimonio)
                 }
                 .scrollIndicators(.hidden)
+                .padding(.top, -22)
             }
             .padding(.top, 260)
         }
@@ -89,30 +90,33 @@ struct descripcionPatrimonio:View {
             HStack{
                 VStack(alignment: .leading){
                     Text(patrimonio.titulo)
-                        .font(.system(size: 25))
-                        .fontWeight(.bold)
                         .foregroundStyle(.rosaMex)
+                        .font(.custom(.poppinsBold, style: .title2))
                     
-                    Text(patrimonio.estado)
-                        .foregroundStyle(.gray)
+                    HStack{
+                        Image(patrimonio.personaFoto)
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .clipShape(Circle())
+                        Text(patrimonio.persona)
+                            .font(.custom(.raleway, style: .custom14))
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.top, -16)
                 }
-                
-                Spacer()
-                
-                HStack{
-                    Text("Por:")
-                        .fontWeight(.semibold)
-                        .font(.system(size: 17))
-                        .foregroundStyle(.rosaMex)
-                    Image(patrimonio.personaFoto)
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .clipShape(Circle())
-                    Text(patrimonio.persona)
-                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding()
+            .padding(.top, 4)
         }
+        
+        Rectangle()
+            .foregroundStyle(.quinary)
+            .frame(maxWidth: .infinity)
+            .frame(height: 4)
+            .padding(.top, -12)
+            .padding(.bottom, 6)
     }
 }
 
@@ -123,24 +127,29 @@ struct tagsPatrimonio: View {
             Text("Tags")
                 .fontWeight(.semibold)
                 .foregroundStyle(.rosaMex) +
-            Text(" de interes")
+            Text(" de interés")
                 .fontWeight(.semibold)
             Spacer()
         }
-        .padding(.leading,20)
+        .font(.custom(.poppinsSemiBold, style: .body))
+        .padding(.horizontal)
+        .padding(.vertical, 14)
         
-        ScrollView(.horizontal){
-            HStack{
-                ForEach(tags, id: \.self){ tag in
-                    tagCard(tag: tag)
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 0) {
+                Spacer()
+                    .frame(width: 16)
+                HStack(spacing: 8) {
+                    ForEach(tags, id: \.self) { tag in
+                        tagCard(tag: tag)
+                    }
                 }
+                Spacer()
+                    .frame(width: 16)
             }
             .padding(.bottom, 5)
         }
         .frame(height: 50)
-        .padding(.leading, 20)
-        .padding(.bottom)
-        .scrollIndicators(.hidden)
     }
 }
 
@@ -155,15 +164,21 @@ struct descripcionPostPatrimonio:View {
                 .fontWeight(.semibold)
             Spacer()
         }
-        .padding(.leading,20)
+        .font(.custom(.poppinsSemiBold, style: .body))
+        .padding(.horizontal)
+        .padding(.top, 4)
+        .padding(.bottom, 2)
         
         HStack{
             Text(patrimonio.descripcion)
-                .fontWeight(.semibold)
-                .foregroundStyle(.gray)
+                .fontWeight(.medium)
+                .foregroundStyle(.black)
+                .font(.custom(.raleway, style: .subheadline))
+
         }
-        .padding(.vertical, 5)
-        .padding(.horizontal,20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal,16)
+        .padding(.bottom, 12)
     }
 }
 
@@ -175,14 +190,16 @@ struct ubicacionPatrimonio:View {
     var body: some View {
         VStack{
             HStack{
-                Text("Ubicacion")
+                Text("Ubicación")
                     .fontWeight(.semibold)
                     .foregroundStyle(.rosaMex) +
                 Text(" de \(patrimonio.titulo)")
                     .fontWeight(.semibold)
                 Spacer()
             }
-            .padding(.leading,20)
+            .font(.custom(.poppinsSemiBold, style: .body))
+            .padding(.horizontal)
+            .padding(.bottom, 4)
             
             Map(position: $camera, selection: $selectedTag){
                 Marker(patrimonio.titulo, coordinate: CLLocationCoordinate2D(latitude: patrimonio.coordinates[0], longitude: patrimonio.coordinates[1]))
@@ -195,7 +212,7 @@ struct ubicacionPatrimonio:View {
             .mapControls { MapScaleView() }
             .onTapGesture { openGoogleMaps(for: CLLocationCoordinate2D(latitude: patrimonio.coordinates[0], longitude: patrimonio.coordinates[1])) }
         }
-        .padding(.bottom, 25)
+        .padding(.bottom, 16)
     }
     
     private func openGoogleMaps(for coordinate: CLLocationCoordinate2D) {
@@ -210,16 +227,33 @@ struct estadoPatrimonio:View {
     @EnvironmentObject var router: Router
     
     var estado: Estado
+    var patrimonio: Patrimonio
     
     var body: some View {
-        estadoCard(estado: estado)
-            .onTapGesture {
-                router.navigate(to: .estadoView(estado: estado))
+        
+        VStack{
+            HStack{
+                Text("Explora")
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.rosaMex) +
+                Text(" \(patrimonio.estado)")
+                    .fontWeight(.semibold)
+                Spacer()
             }
-            .padding(.bottom, 25)
+            .font(.custom(.poppinsSemiBold, style: .body))
+            .padding(.horizontal)
+            .padding(.bottom, 4)
+            
+            estadoCard(estado: estado)
+                .padding(.bottom, 32)
+                .onTapGesture {
+                    router.navigate(to: .estadoView(estado: estado))
+                }
+        
+        }
     }
 }
 
 #Preview {
-    patrimonioView(patrimonio: Patrimonio(id: 0, tags: ["Hike", "Aventura", "Agua"], persona: "La Cumbre Cotidiana", personaFoto: "person5", estado: "Nuevo León", comunidad: "Puerto Genovevo", titulo: "Cañon Matacanes", descripcion: "Embarcate en una aventura extrema en uno de los cañones mas famosos de Mexico, con saltos de mas 12 metros, toboganes de agua, espeologia y mucho mas", coordinates: [25.371573866134465, -100.15547982938328], ubicacion: "Cola de caballo", fotos: ["matacanes1", "matacanes2", "matacanes3"], idioma: "Náhuatl", favorited: false, visited: false, estrella: 5))
+//  patrimonioView(patrimonio: Patrimonio(id: 0, tags: ["Hike", "Aventura", "Agua"], persona: "La Cumbre Cotidiana", personaFoto: "person5", estado: "Nuevo León", comunidad: "Puerto Genovevo", titulo: "Cañon Matacanes", descripcion: "Embarcate en una aventura extrema en uno de los cañones mas famosos de Mexico, con saltos de mas 12 metros, toboganes de agua, espeologia y mucho mas", coordinates: [25.371573866134465, -100.15547982938328], ubicacion: "Cola de caballo", fotos: ["matacanes1", "matacanes2", "matacanes3"], idioma: "Náhuatl", favorited: false, visited: false, estrella: 5))
 }

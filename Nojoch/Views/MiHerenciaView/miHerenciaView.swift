@@ -115,10 +115,10 @@ struct donutChartPatrimonios: View {
             
             VStack{
                 Text(selectedDonutValue)
-                    .font(.title)
                     .multilineTextAlignment(.center)
+                    .font(.custom(.poppinsSemiBold, style: .title))
                 Text(selectedDonutName)
-                    .font(.title3)
+                    .font(.custom(.poppinsSemiBold, style: .title3))
                     .foregroundStyle(.gray)
                     .multilineTextAlignment(.center)
                     .frame(width: 150)
@@ -145,7 +145,8 @@ struct visitedPatrimonios:View {
                 .foregroundColor(selectedName != "Patrimonios visitados" ? Color.tagColors[selectedName] : .rosaMex)
             Spacer()
         }
-        .padding(.leading,20)
+        .font(.custom(.poppinsSemiBold, style: .body))
+        .padding(.leading)
         
         ScrollView(.horizontal){
             HStack{
@@ -169,7 +170,7 @@ struct estadosMiHerencia:View {
     var body: some View {
         VStack(alignment: .leading) {
             Text("Estados Visitados")
-                .font(.headline)
+                .font(.custom(.poppinsSemiBold, style: .headline))
             
             LazyVGrid(columns: gridColumns) {
                 ForEach(visitedEstados, id: \.estado.id) { (estado, visitedCount) in
@@ -178,7 +179,7 @@ struct estadosMiHerencia:View {
             }
             
             Text("Estados por visitar")
-                .font(.headline)
+                .font(.custom(.poppinsSemiBold, style: .headline))
                 .padding(.top)
             
             LazyVGrid(columns: gridColumns) {
@@ -205,11 +206,11 @@ struct estadoRow:View {
                 .scaledToFit()
                 .grayscale(isVisited ? 0 : 1)
             Text(estado.nombre)
-                .font(.system(size: 12))
+                .font(.custom(.poppinsSemiBold, style: .caption))
                 .fontWeight(.semibold)
             Text("\(visitedCount) visitados")
                 .foregroundStyle(.gray)
-                .font(.system(size: 10))
+                .font(.custom(.poppinsSemiBold, style: .custom10))
         }
         .onTapGesture {
             router.navigate(to: .estadoView(estado: estado))

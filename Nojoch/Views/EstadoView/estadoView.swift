@@ -37,6 +37,7 @@ struct estadoView: View {
                     comunidadesEstado(filteredComunidades: filteredComunidades)
                 }
                 .scrollIndicators(.hidden)
+                .padding(.top, -18)
             }
             .padding(.top, 260)
         }
@@ -81,8 +82,8 @@ struct headerEstado:View {
             
             VStack{
                 HeaderAppViewComponent()
-                    .padding(.horizontal, 30)
-                    .padding(.top, 50)
+                    .padding(.horizontal)
+                    .padding(.top, 64)
                 Spacer()
             }
         }
@@ -94,25 +95,42 @@ struct descripcionEstado:View {
     var estado: Estado
     var filteredComunidades: [Comunidad]
     var body: some View {
-        HStack{
-            VStack(alignment: .leading){
-                Text(estado.nombre)
-                    .font(.system(size: 28))
-                    .fontWeight(.bold)
-                    .foregroundStyle(.rosaMex)
+        VStack{
+            HStack{
+                VStack(alignment: .leading){
+                    Text(estado.nombre)
+                        .foregroundStyle(.rosaMex)
+                        .font(.custom(.poppinsBold, style: .title))
+                    
+                    Text(estado.ubicacion)
+                        .foregroundStyle(.secondary)
+                        .font(.custom(.raleway, style: .headline))
+                        .fontWeight(.semibold)
+                }
                 
-                Text(estado.ubicacion)
-                    .foregroundStyle(.gray)
+                Spacer()
+                
+                Rectangle()
+                    .frame(width: 1, height: 56)
+                    .offset(y: 4)
+                    .foregroundStyle(.quaternary)
+                
+                Spacer()
+                
+                Text("\(filteredComunidades.count) comunidades")
+                    .foregroundStyle(.rosaMex)
+                    .font(.custom(.poppinsSemiBold, style: .body))
+                    .padding(.trailing, 6)
             }
-            
-            Spacer()
-            
-            Text("\(filteredComunidades.count) comunidades")
-                .fontWeight(.semibold)
-                .font(.system(size: 17))
-                .foregroundStyle(.rosaMex)
+            .padding()
+            .padding(.top, 4)
         }
-        .padding()
+        Rectangle()
+            .foregroundStyle(.quinary)
+            .frame(maxWidth: .infinity)
+            .frame(height: 4)
+            .padding(.top, -8)
+            .padding(.bottom, 6)
     }
 }
 
@@ -123,11 +141,13 @@ struct tagsEstado: View {
             Text("Tags")
                 .fontWeight(.semibold)
                 .foregroundStyle(.rosaMex) +
-            Text(" de interes")
+            Text(" de interés")
                 .fontWeight(.semibold)
             Spacer()
         }
-        .padding(.leading,20)
+        .font(.custom(.poppinsSemiBold, style: .body))
+        .padding(.horizontal)
+        .padding(.vertical, 14)
         
         ScrollView(.horizontal){
             HStack{
@@ -138,7 +158,7 @@ struct tagsEstado: View {
             .padding(.bottom, 5)
         }
         .frame(height: 50)
-        .padding(.leading, 20)
+        .padding(.leading, 16)
         .padding(.bottom)
         .scrollIndicators(.hidden)
     }
@@ -155,7 +175,10 @@ struct postsEstado:View {
                 .fontWeight(.semibold)
             Spacer()
         }
-        .padding(.leading,20)
+        .font(.custom(.poppinsSemiBold, style: .body))
+        .padding(.horizontal)
+        .padding(.top, 8)
+        .padding(.bottom, 4)
         
         ScrollView(.horizontal){
             HStack{
@@ -165,7 +188,7 @@ struct postsEstado:View {
             }
             .padding(.bottom, 5)
         }
-        .padding(.leading, 20)
+        .padding(.leading, 16)
         .padding(.bottom)
         .scrollIndicators(.hidden)
     }
@@ -185,11 +208,15 @@ struct comunidadesEstado:View {
                 .fontWeight(.semibold)
             Spacer()
         }
-        .padding(.leading,20)
+        .font(.custom(.poppinsSemiBold, style: .body))
+        .padding(.horizontal)
+        .padding(.top, -4)
+        .padding(.bottom, 4)
         
         ForEach(filteredComunidades, id: \.self){ comunidad in
             HStack{
                 comunidadCard(comunidad: comunidad)
+                    .padding(.bottom, 4)
                     .onTapGesture { router.navigate(to: .comunidadView(comunidad: comunidad)) }
             }
         }

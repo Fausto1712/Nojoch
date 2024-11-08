@@ -103,37 +103,39 @@ struct HeaderAppViewExplore: View {
     var body: some View {
         VStack{
             HStack{
-                Image("person1")
+                Image("mapico2")
                     .resizable()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-                    .foregroundStyle(.gray.opacity(0.5))
+                    .frame(width: 45, height: 23)
                     .onTapGesture {
                         isOnboardingCompleted = false
                         router.setPath([.contentView])
                     }
                 Text(headerTitle)
                     .foregroundStyle(.rosaMex)
-                    .font(.system(size: 22))
-                    .fontWeight(.bold)
+                    .font(.custom(.poppinsBold, style: .title2))
                 
                 Spacer()
                 
-                Image(systemName: isPresentingmap ? "list.bullet" : "map.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .padding(10)
-                    .frame(width: 36, height: 36)
-                    .background(.gray.opacity(0.2))
-                    .clipShape(Circle())
-                    .fontWeight(.bold)
-                    .onTapGesture { isPresentingmap.toggle() }
+                Button{
+                    isPresentingmap.toggle()
+                } label: {
+                    Circle()
+                        .frame(width: 36, height: 36)
+                        .foregroundStyle(.gray.opacity(0.1))
+                        .overlay{
+                            Image(systemName: isPresentingmap ? "list.bullet" : "map.fill")
+                                .font(.headline)
+                                .foregroundStyle(.black)
+                        }
+                }
             }
+            .padding(.vertical, 4)
             Divider()
                 .background(Color.gray.opacity(0.5))
                 .padding(.horizontal, -16)
                 .padding(.bottom,0)
         }
+        .padding(.top, 8)
     }
 }
 
@@ -151,9 +153,11 @@ struct HeaderAppViewComponent: View {
                         .overlay{
                             Image(systemName: "chevron.left")
                                 .resizable()
+                                .scaledToFit()
                                 .foregroundStyle(.black)
                                 .frame(width: 10, height: 20)
                                 .fontWeight(.bold)
+                                .offset(x: -1)
                         }
                 }
                 
@@ -165,7 +169,7 @@ struct HeaderAppViewComponent: View {
                         Image(systemName: "bookmark")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 15)
+                            .frame(width: 12)
                             .fontWeight(.bold)
                     }
             }
