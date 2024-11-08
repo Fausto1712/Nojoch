@@ -57,8 +57,8 @@ class CustomARView: ARView {
             .actionStream
             .sink { [weak self] action in
                 switch action {
-                case .showBadge(let type):
-                    self?.loadObj(type)
+                case .showBadge(let file, let name):
+                    self?.loadObj(file: file, name: name)
                     
                 case .removeAllAnchors:
                     self?.scene.anchors.removeAll()
@@ -106,7 +106,7 @@ class CustomARView: ARView {
         
     }
     
-    func loadObj(_ object: String) {
+    func loadObj(file object: String, name: String) {
         guard let cameraTransform = self.session.currentFrame?.camera.transform else {
             print("Camera transform not available.")
             return
@@ -124,7 +124,7 @@ class CustomARView: ARView {
         
         if let insigniaEntity = insignia {
             self.initialZPosition = objectPosition.z
-            setNameRecursively(entity: insigniaEntity, name: object)
+            setNameRecursively(entity: insigniaEntity, name: name)
             installGestures(on: insigniaEntity)
             anchor.addChild(insigniaEntity)
             scene.addAnchor(anchor)
