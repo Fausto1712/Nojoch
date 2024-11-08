@@ -73,7 +73,7 @@ class CustomARView: ARView {
     func loadAll(_ objects: [String: String]) {
         self.scene.anchors.removeAll()
         
-        let spacing: Float = 0.15
+        let spacing: Float = 0.19
         let itemsPerRow = 4
         var row = 0
         var col = 0
