@@ -15,6 +15,6 @@ Herencia Viva es una aplicación móvil que busca conectar a las comunidades rur
 | Name                  | Github     |
 | --------------------- | --------- |
 | Tlanetzi Chavez | |
-| Axel Amós Hernández | |
+| Axel Hernández | [@Axel3246](https://github.com/Axel3246)|
 | Fausto Pinto Cabrera | |
 | Alejandra Coeto | [@Ale-Coeto](https://github.com/Ale-Coeto) | 
